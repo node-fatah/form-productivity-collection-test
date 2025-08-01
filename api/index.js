@@ -351,6 +351,16 @@ app.get('/clear-cache', (req, res) => {
   res.send('Cache cleared!');
 });
 
+app.get('/logout', (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      console.error('Logout error:', err);
+    }
+    res.redirect('/login');
+  });
+});
+
+
 app.get('/', (req, res) => {
   res.send('Aplikasi Productivity sudah running di Vercel!');
 });

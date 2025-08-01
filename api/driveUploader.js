@@ -1,4 +1,5 @@
 const { google } = require('googleapis');
+const { Readable } = require('stream');
 
 const auth = new google.auth.GoogleAuth({
   credentials: {
@@ -26,7 +27,7 @@ async function uploadFile(file) {
 
   const media = {
     mimeType: file.mimetype,
-    body: Buffer.from(file.buffer),
+    body: Readable.from(file.buffer), // ✅ convert buffer to stream
   };
 
   const res = await drive.files.create({

@@ -25,25 +25,28 @@ async function uploadFile(file) {
   };
 
   const media = {
-  mimeType: file.mimetype,
-  body: Buffer.from(file.buffer),
-};
+    mimeType: file.mimetype,
+    body: Buffer.from(file.buffer),
+  };
 
-const res = await drive.files.create({
-  resource: fileMetadata,
-  media,
-  fields: 'id, webViewLink',
-});
+  const res = await drive.files.create({
+    resource: fileMetadata,
+    media,
+    fields: 'id, webViewLink',
+  });
 
-const fileId = res.data.id;
+  const fileId = res.data.id;
 
-await drive.permissions.create({
-  fileId: fileId,
-  requestBody: {
-    role: 'reader',
-    type: 'anyone',
-  },
-});
+  await drive.permissions.create({
+    fileId: fileId,
+    requestBody: {
+      role: 'reader',
+      type: 'anyone',
+    },
+  });
 
-const directLink = `https://drive.google.com/uc?export=view&id=${fileId}`;
-return directLink;
+  const directLink = `https://drive.google.com/uc?export=view&id=${fileId}`;
+  return directLink;
+}
+
+module.exports = { uploadFile };

@@ -1,4 +1,3 @@
-const fs = require('fs');
 const { google } = require('googleapis');
 
 const auth = new google.auth.GoogleAuth({
@@ -22,12 +21,12 @@ const drive = google.drive({ version: 'v3', auth });
 async function uploadFile(file) {
   const fileMetadata = {
     name: file.originalname,
-    parents: ['10GXQ83qggvS-azoI3Jl4hL9o99HlQoA9'], // folder ID kamu
+    parents: ['10GXQ83qggvS-azoI3Jl4hL9o99HlQoA9'],
   };
 
   const media = {
     mimeType: file.mimetype,
-    body: fs.createReadStream(file.path),
+    body: Buffer.from(file.buffer),
   };
 
   const res = await drive.files.create({
@@ -46,9 +45,7 @@ async function uploadFile(file) {
     },
   });
 
-  const directLink = `https://drive.google.com/uc?export=view&id=${fileId}`;
-  fs.unlinkSync(file.path);
-  return directLink;
+  return `https://drive.google.com/uc?export=view&id=${fileId}`;
 }
 
 module.exports = { uploadFile };

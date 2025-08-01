@@ -270,11 +270,18 @@ body {
                 <td><%= row[27] %></td> <!-- SP3 Send Date -->
                 <td><%= row[28] %></td> <!-- SSP3 Status -->
                 <td class="text-center">
-      <% if (row[1] && row[1] !== '') { %>
-       <a href="/edit-id/<%= encodeURIComponent(row[0]) %>/<%= row[1] %>" class="fa fa-duotone fa-pen-to-square edit-link"></a>
-      <% } else { %>
-        <span class="fa fa-duotone fa-pen-to-square edit-link" style="color: grey; cursor: not-allowed;" title="Edit    disabled"></span>
-      <% } %>
+ <% 
+  const periodNow = parseInt(row[13], 10);  // row 13 (index 12)
+  const currentPeriod = parseInt(row[9], 10); // row 9 (index 8)
+  const canEdit = row[1] && row[1] !== '' && (!isNaN(periodNow) && !isNaN(currentPeriod) && periodNow < currentPeriod);
+%>
+
+<% if (canEdit) { %>
+  <a href="/edit-id/<%= encodeURIComponent(row[0]) %>/<%= row[1] %>" class="fa fa-duotone fa-pen-to-square edit-link"></a>
+<% } else { %>
+  <span class="fa fa-duotone fa-pen-to-square edit-link" style="color: grey; cursor: not-allowed;" title="Edit disabled"></span>
+<% } %>
+
       </td>
       </tr>
       <% }) %>

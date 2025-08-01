@@ -1,7 +1,7 @@
 const express = require('express');
 const serverless = require('serverless-http');
 const multer = require('multer');
-const upload = multer({ dest: 'uploads/' });
+const upload = multer({ storage: multer.memoryStorage() });
 const bodyParser = require('body-parser');
 const { google } = require('googleapis');
 const path = require('path');

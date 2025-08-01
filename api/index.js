@@ -40,7 +40,7 @@ const auth = new google.auth.GoogleAuth({
 const sheets = google.sheets({ version: 'v4', auth });
 
 app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
+app.set('views', path.join(__dirname, '..', 'views'));
 
 // Middleware //
 app.use(bodyParser.urlencoded({ extended: true, limit: '1mb' }));
@@ -225,8 +225,6 @@ app.get('/edit-id/:main_product/:agreement_number', async (req, res) => {
 
 
 // Route to handle update
-const { uploadFile } = require('./driveUploader');
-
 app.post('/update/:main_product/:agreement_number', upload.array('visit_Poto'), async (req, res) => {
   const { main_product, agreement_number } = req.params;
   const body = req.body;

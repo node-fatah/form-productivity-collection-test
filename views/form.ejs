@@ -923,16 +923,18 @@ document.querySelector('button[type="reset"]').addEventListener('click', () => {
   });
 </script>
 
-<button type="submit" class="btn btn-primary btn-sm">
-<%= editMode ? 'Update Data' : 'Submit' %>
-</button>
-<a href="/data" class="btn btn-secondary btn-sm">Back to Data Table</a>
-<button type="reset" class="btn btn-warning btn-sm">
-    Reset Form
-  </button>
-
-
-
+    <div class="d-flex justify-content-between mt-3">
+    <div>
+    <button type="submit" class="btn btn-primary btn-sm">
+      <%= editMode ? 'Update Data' : 'Submit' %>
+    </button>
+    <a href="/data" class="btn btn-secondary btn-sm">Back to Data Table</a>
+    <button type="reset" class="btn btn-warning btn-sm">Reset Form</button>
+    </div>
+    <div>
+    <a href="/logout" class="btn btn-danger btn-sm">Logout</a>
+    </div>
+    </div>
 </form>
 </div>
             <footer style="position: fixed; bottom: 10px; right: 10px;">

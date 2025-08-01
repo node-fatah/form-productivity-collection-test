@@ -42,6 +42,24 @@ const sheets = google.sheets({ version: 'v4', auth });
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, '..', 'views'));
 
+const session = require('express-session');
+
+app.use(session({
+  secret: 'Xnxx1230987azkaArga', // ganti dengan yang lebih aman
+  resave: false,
+  saveUninitialized: true
+}));
+
+
+function requireLogin(req, res, next) {
+  if (req.session && req.session.loggedIn) {
+    next();
+  } else {
+    res.redirect('/login');
+  }
+}
+
+
 // Middleware //
 app.use(bodyParser.urlencoded({ extended: true, limit: '1mb' }));
 app.use(bodyParser.json({ limit: '1mb' }));
@@ -73,17 +91,53 @@ async function fetchDropdownList() {
   }
 }
 
+
+app.get('/login', (req, res) => {
+  res.render('login', { error: null });
+});
+
+app.post('/login', async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    const response = await sheets.spreadsheets.values.get({
+      spreadsheetId: SPREADSHEET_ID,
+      range: 'Dropdown!L2:M15',
+    });
+
+    const users = response.data.values || [];
+
+    const userFound = users.find(row =>
+      row[0]?.toLowerCase() === email.toLowerCase() &&
+      row[1] === password
+    );
+
+    if (userFound) {
+      req.session.loggedIn = true;
+      req.session.email = email;
+      res.redirect('/data');
+    } else {
+      res.render('login', { error: 'Email atau Password salah' });
+    }
+  } catch (error) {
+    console.error('Login error:', error);
+    res.render('login', { error: 'Terjadi kesalahan saat login' });
+  }
+});
+
+
+
 // Route to display data in a table
-app.get('/data', async (req, res) => {
+app.get('/data', requireLogin, async (req, res) => {
   try {
     const selectedProduct = req.query.main_product || '';
     const data = await fetchDataFromGoogleSheet();
 
- const now = new Date();
-const currentMonth = now.getMonth();
-const currentYear = now.getFullYear();
+  const now = new Date();
+  const currentMonth = now.getMonth();
+  const currentYear = now.getFullYear();
 
-const filteredData = data.filter(row => {
+  const filteredData = data.filter(row => {
   const productMatch = !selectedProduct || (row[0] || '').toLowerCase() === selectedProduct.toLowerCase();
   const billDate = row[10]; // kolom ke-10 (index ke-9)
   
@@ -110,7 +164,7 @@ const filteredData = data.filter(row => {
 
 
 // Route to display form for adding new data
-app.get('/add', async (req, res) => {
+app.get('/add', requireLogin, async (req, res) => {
   try {
     if (req.query.noCache === 'true') {
       dataCache = null;
@@ -139,7 +193,7 @@ app.get('/add', async (req, res) => {
 });
 
 // Route to handle form submission
-app.post('/submit', async (req, res) => {
+app.post('/submit', requireLogin, async (req, res) => {
   const { main_product, agrrement_number, debitur_name, debt_phone, alamat_debt, econ_name, econ_phone, tenor, current_period,  installment, bill_date, due_date, overdue, 
           repaid_amount, os_principal, status_debtur, 
           user_name_sp, 
@@ -188,7 +242,7 @@ app.post('/submit', async (req, res) => {
 });
 
 // Route to display data in edit form
-app.get('/edit-id/:main_product/:agreement_number', async (req, res) => {
+app.get('/edit-id/:main_product/:agreement_number', requireLogin, async (req, res) => {
   const { main_product, agreement_number } = req.params;
 
   try {
@@ -225,7 +279,7 @@ app.get('/edit-id/:main_product/:agreement_number', async (req, res) => {
 
 
 // Route to handle update
-app.post('/update/:main_product/:agreement_number', upload.array('visit_Poto'), async (req, res) => {
+app.post('/update/:main_product/:agreement_number', upload.array('visit_Poto'), requireLogin, async (req, res) => {
   const { main_product, agreement_number } = req.params;
   const body = req.body;
 

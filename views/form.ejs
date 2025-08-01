@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.4.0/css/responsive.bootstrap4.min.css">
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= editMode ? 'AFI | Productivity Collection' : 'Add Data' %></title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+ <style>
+body {
+    font-family: 'Inter', Arial, sans-serif;
+    font-size: 11px;
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+/* Logo Area */
+.logo-container {
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+.logo-container img {
+    max-width: 70px;
+}
+.logo-title {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+.logo-subtitle {
+    font-size: 12px;
+    color: #777;
+}
+
+/* Form Container */
+.form-container {
+    background-color: #fff;
+    padding: 15px 25px;
+    border-radius: 4px;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    margin-bottom: 20px;
+}
+
+/* Input & Select - No border-radius */
+input,
+select,
+textarea,
+button,
+.form-control,
+.form-control-sm {
+    border-radius: 0 !important;
+    font-size: 11px;
+}
+
+/* Table Styling */
+.table th {
+    font-weight: 600;
+    font-size: 11px;
+    background-color: #f1f1f1;
+}
+.table td {
+    font-size: 11px;
+}
+.dataTables_length select,
+.dataTables_filter input {
+    font-size: 11px !important;
+}
+
+/* Button Style */
+.btn,
+.btn-sm {
+    border-radius: 0;
+    font-size: 11px;
+    font-weight: 500;
+}
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+/* Horizontal Line */
+.horizontal-line {
+    border-top: 1px solid #ddd;
+    margin: 1rem 0;
+}
+
+/* Custom Tabs */
+.custom-tabs .nav-tabs {
+    border-bottom: 1px solid #dee2e6;
+    display: flex;
+    justify-content: space-between;
+}
+.custom-tabs .nav-link {
+    flex: 1;
+    text-align: center;
+    font-size: 11px;
+    padding: 6px 8px;
+    color: #007bff;
+    border: 1px solid transparent;
+    border-radius: 0;
+    background-color: #f8f9fa;
+    margin-right: 2px;
+}
+.custom-tabs .nav-link.active {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff #007bff #fff;
+    font-weight: bold;
+}
+.custom-tabs .nav-link:hover {
+    background-color: #0056b3;
+    color: #fff;
+}
+
+/* Responsive Form Grid */
+.form-group-custom {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+}
+.form-group-custom .form-control {
+    flex: 1;
+    min-width: 150px;
+}
+
+/* Title */
+.form-title {
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+}
+.form-group label {
+  font-size: 11px;
+  font-weight: 500;
+}
+.form-control-sm {
+  font-size: 11px;
+  font-family: 'Inter', sans-serif;
+}
+
+</style>
+
+</head>
+<body>
+    <div class="form-container mt-4 mx-auto" style="max-width: 800px;; margin-top: 0px;">
+    <% if (editMode) { %>
+    <div class="logo-container">
+    <img src="https://static.wixstatic.com/media/30fa2e_387864f2775646d8ba60bb154d579510~mv2.png" alt="Logo Akulaku" class="img-fluid mx-auto d-block">
+    <p class="logo-title">Productivity Collection Non Retail</p>
+    <p class="logo-subtitle">PT Akulaku Finance Indonesia</p>
+    </div>
+    <% } %>
+    <hr style="border-color: grey;">
+    <h2 class="form-title"><%= editMode ? '' : 'Add Data' %></h2>
+
+           <form action="<%= editMode ? ('/update/' + encodeURIComponent(row[0]) + '/' + row[1]) : '/submit' %>" method="POST" enctype="multipart/form-data">
+            <div class="form-group" style="display: none;">
+            <label for="main_product">Main Product</label>
+            <input type="text" class="form-control form-control-sm" id="main_product" name="main_product" value="<%= row[0] %>" readonly required>
+            </div>
+
+    <div class="form-group">
+            <div class="row">
+            <div class="col">
+            <label for="agrrement_number">Nomor Kontrak</label>
+            <input type="text" class="form-control form-control-sm" id="agrrement_number" name="agrrement_number" value="<%= row[1] %>" readonly required >
+            </div>      
+           <div class="col">
+            <label for="debitur_name">Nama Debitur/ Perusahaan</label>
+            <input type="text" class="form-control form-control-sm" id="debitur_name" name="debitur_name" value="<%= row[2] %>" readonly required>
+            </div>
+            <div class="col">
+            <label for="debtor_phone">Nomor Telpon</label>
+            <div class="input-group">
+            <input type="text" class="form-control form-control-sm" id="debt_phone" name="debt_phone" value="<%= row[3] %>" readonly required>
+            <div class="input-group-append">
+            <span class="input-group-text" style="background-color: #25D366; border-color: #25D366; padding: 0.0rem; min-width: 40px; display: flex; align-items: center; justify-content: center;">
+            <a href="#" id="copyButton"><i class="fas fa-copy" style="color: white; font-size: 0.8rem;"></i></a>
+            </span>
+            </div>
+            </div>
+            </div>
+            </div>
+    </div> 
+
+            <div class="form-group">
+            <label for="alamat_debt">Alamat Penagihan</label>
+            <textarea class="form-control form-control-sm" id="alamat_debt" name="alamat_debt" rows="3" readonly required><%= row[4] %></textarea>
+            </div>
+   
+
+
+    <div class="form-group">
+            <div class="row">
+            <div class="col">
+            <label for="econ_name">Emergency Contact/ PIC Perusahaan</label>
+            <input type="text" class="form-control form-control-sm" id="econ_name" name="econ_name" value="<%= row[5] %>" readonly required >
+            </div>      
+            <div class="col">
+            <label for="econ_phone">Telpon EC/ PIC Perusahaan</label>
+            <div class="input-group">
+            <input type="text" class="form-control form-control-sm" id="econ_phone" name="econ_phone" value="<%= row[6] %>" readonly required>
+            <div class="input-group-append">
+            <span class="input-group-text" style="background-color: #25D366; border-color: #25D366; padding: 0.0rem; min-width: 40px; display: flex; align-items: center; justify-content: center;">
+            <a href="#" id="copyButton2"><i class="fas fa-copy" style="color: white; font-size: 0.8rem;"></i></a>
+            </span>
+            </div>
+            </div>
+            </div>
+            </div>
+    </div>
+
+   <div class="form-group">
+            <div class="row">
+            <div class="col">
+            <label for="tenor">Tenor</label>
+            <input type="text" class="form-control form-control-sm" id="tenor" name="tenor" value="<%= row[7] %>" readonly required >
+            </div>    
+            <div class="col">
+            <label for="current_period">Angsuran Ke-</label>
+            <input type="text" class="form-control form-control-sm" id="current_period" name="current_period" value="<%= row[8] %>" readonly required >
+            </div> 
+    
+            <div class="col" style="display: none;">
+            <label for="bill_date">Current Due Date</label>
+            <input type="text" class="form-control form-control-sm" id="bill_date" name="bill_date" value="<%= row[10] %>" readonly required >
+            </div>  
+
+
+            <div class="col">
+            <label for="due_date">Jatuh Tempo</label>
+            <input type="text" class="form-control form-control-sm" id="due_date" name="due_date" value="<%= row[11] %>" readonly required >
+            </div>    
+            <div class="col">
+            <label for="overdue">Overdue</label>
+            <input type="text" class="form-control form-control-sm" id="overdue" name="overdue" value="<%= row[12] %>" readonly required >
+            </div>   
+            </div>
+    </div>
+   
+
+  <div class="form-group">
+            <div class="row">
+            <div class="col">
+            <label for="installment">Nominal Angsuran</label>
+            <input type="text" class="form-control form-control-sm" id="installment" name="installment" value="<%= row[9] %>" readonly required >
+            </div> 
+            <div class="col">
+            <label for="repaid_amount">Nominal Pembayaran</label>
+            <input type="text" class="form-control form-control-sm" id="repaid_amount" name="repaid_amount" value="<%= row[13] %>" readonly required >
+            </div>  
+            <div class="col">
+            <label for="os_principal">Outstanding Principal</label>
+            <input type="text" class="form-control form-control-sm" id="os_principal" name="os_principal" value="<%= row[14] %>" readonly required >
+            </div>    
+            </div>
+    </div>
+    
+       
+    <div class="form-group"> 
+            <div class="col" style="display: none;">
+            <label for="status_debtur">Status Debitur</label>
+            <input type="text" class="form-control form-control-sm" id="status_debtur" name="status_debtur" value="<%= row[15] %>" readonly required >
+            </div>  
+    </div>
+    
+ 
+
+
+<hr style="border-color: red;">
+<div class="form-section">
+            <ul class="nav nav-tabs custom-tabs" id="formTabs" role="tablist">
+            <li class="nav-item">
+            <a class="nav-link active" id="sp-tab" data-toggle="tab" href="#surat-peringatan" role="tab">Surat Peringatan</a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link" id="wa-tab" data-toggle="tab" href="#whatsapp" role="tab">Pesan Whatsapp</a>
+            </li>            
+            <li class="nav-item">
+            <a class="nav-link" id="call-tab" data-toggle="tab" href="#call-debitur" role="tab">Telpon Debitur/ Perusahaan</a>
+            </li>
+             <li class="nav-item">
+            <a class="nav-link" id="call-econ-tab" data-toggle="tab" href="#call-econ" role="tab">Telpon Econ/ PIC</a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link" id="call-other-tab" data-toggle="tab" href="#call-other" role="tab">Telpon Lainnya</a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link" id="visit-tab" data-toggle="tab" href="#visit" role="tab"> Kunjungan </a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link" id="eksternal-tab" data-toggle="tab" href="#eksternal" role="tab"> Eksternal </a>
+            </li>
+            </ul>
+
+ 
+<br>
+<div class="tab-content">
+            <div class="tab-pane fade show active" id="surat-peringatan" role="tablist">
+                    <div class="form-group">
+                    <label for="user_name_sp">PIC Surat Peringatan</label>
+                    <select class="form-control form-control-sm" id="user_name_sp" name="user_name_sp"
+                    <%= row && row[16] ? 'disabled' : '' %>>
+                    <option value="" disabled <%= !row || !row[16] ? 'selected' : '' %>>Pilih Nama User</option>
+                    <% userOptions.forEach(function(option) { %>
+                    <option value="<%= option %>" <%= row && row[16] === option ? 'selected' : '' %>><%= option %></option>
+                    <% }); %>
+                    </select>
+                    <% if (row && row[16]) { %>
+                    <input type="hidden" name="user_name_sp" value="<%= row[16] %>">
+                    <% } %>
+                    </div>
+
+  <div class="form-group">
+  <div class="row">
+
+    <!-- SP1 -->
+    <div class="col-md-4">
+      <label for="sp1_date">Jadwal Kirim SP1</label>
+      <input type="date" class="form-control form-control-sm" id="sp1_date" value="<%= row?.[17] || '' %>" disabled>
+      <input type="hidden" name="sp1_date" value="<%= row?.[17] || '' %>">
+
+      <label for="sp1_no" class="mt-1">Nomor Surat</label>
+      <input type="text" class="form-control form-control-sm" id="sp1_no_display" value="<%= row?.[18] || '' %>" disabled>
+      <input type="hidden" name="sp1_no" value="<%= row?.[18] || '' %>">
+
+      <label for="sp1_send" class="mt-1">Actual Kirim SP</label>
+      <input type="date" class="form-control form-control-sm" id="sp1_send_display" value="<%= row?.[19] || '' %>" disabled>
+      <input type="hidden" name="sp1_send" value="<%= row?.[19] || '' %>">
+
+      <label for="sp1_status" class="mt-1">Status Pengiriman</label>
+      <select class="form-control form-control-sm" id="sp1_status" name="sp1_status">
+        <option value="" disabled selected>Pilih Status</option>
+        <% suratOptions.forEach(function(option) { %>
+          <option value="<%= option %>" <%= row?.[20] === option ? 'selected' : '' %>><%= option %></option>
+        <% }); %>
+      </select>
+    </div>
+
+    <!-- SP2 -->
+    <div class="col-md-4">
+      <label for="sp2_date">Jadwal Kirim SP2</label>
+      <input type="date" class="form-control form-control-sm" id="sp2_date" value="<%= row?.[21] || '' %>" disabled>
+      <input type="hidden" name="sp2_date" value="<%= row?.[21] || '' %>">
+
+      <label for="sp2_no" class="mt-1">Nomor Surat</label>
+      <input type="text" class="form-control form-control-sm" id="sp2_no_display" value="<%= row?.[22] || '' %>" disabled>
+      <input type="hidden" name="sp2_no" value="<%= row?.[22] || '' %>">
+
+      <label for="sp2_send" class="mt-1">Actual SP2</label>
+      <input type="date" class="form-control form-control-sm" id="sp2_send_display" value="<%= row?.[23] || '' %>" disabled>
+      <input type="hidden" name="sp2_send" value="<%= row?.[23] || '' %>">
+
+      <label for="sp2_status" class="mt-1">Status Pengiriman</label>
+      <select class="form-control form-control-sm" id="sp2_status" name="sp2_status">
+        <option value="" disabled selected>Pilih Status</option>
+        <% suratOptions.forEach(function(option) { %>
+          <option value="<%= option %>" <%= row?.[24] === option ? 'selected' : '' %>><%= option %></option>
+        <% }); %>
+      </select>
+    </div>
+
+    <!-- SP3 -->
+    <div class="col-md-4">
+      <label for="sp3_date">Jadwal Kirim SP3</label>
+      <input type="date" class="form-control form-control-sm" id="sp3_date" value="<%= row?.[25] || '' %>" disabled>
+      <input type="hidden" name="sp3_date" value="<%= row?.[25] || '' %>">
+
+      <label for="sp3_no" class="mt-1">Nomor Surat</label>
+      <input type="text" class="form-control form-control-sm" id="sp3_no_display" value="<%= row?.[26] || '' %>" disabled>
+      <input type="hidden" name="sp3_no" value="<%= row?.[26] || '' %>">
+
+      <label for="sp3_send" class="mt-1">Actual SP3</label>
+      <input type="date" class="form-control form-control-sm" id="sp3_send_display" value="<%= row?.[27] || '' %>" disabled>
+      <input type="hidden" name="sp3_send" value="<%= row?.[27] || '' %>">
+
+      <label for="sp3_status" class="mt-1">Status Pengiriman</label>
+      <select class="form-control form-control-sm" id="sp3_status" name="sp3_status">
+        <option value="" disabled selected>Pilih Status</option>
+        <% suratOptions.forEach(function(option) { %>
+          <option value="<%= option %>" <%= row?.[28] === option ? 'selected' : '' %>><%= option %></option>
+        <% }); %>
+      </select>
+    </div>
+
+  </div>
+</div>
+
+            </div>
+
+
+            <div class="tab-pane fade" id="whatsapp" role="tablist">
+                <div class="form-group">
+                    <label for="user_name_wa">PIC Whatsapp</label>
+                    <select class="form-control form-control-sm" id="user_name_wa" name="user_name_wa"
+                    <%= row && row[29] ? 'disabled' : '' %> 
+                    >
+                    <option value="" disabled <%= !row || !row[29] ? 'selected' : '' %>>Pilih Nama User</option>
+                    <% userOptions.forEach(function(option) { %>
+                    <option value="<%= option %>" <%= row && row[29] === option ? 'selected' : '' %>><%= option %></option>
+                    <% }); %>
+                    </select>
+                    <% if (row && row[29]) { %>
+                    <input type="hidden" name="user_name_wa" value="<%= row[29] %>">
+                    <% } %>
+                </div>                 
+
+                <div class="form-group">
+                    <div class="row">
+                    <div class="col">
+                    <label for="wa_date">Tanggal WhatsApp</label>
+                    <input type="date" class="form-control form-control-sm" id="wa_date" name="wa_date"
+                    value="<%= row && row[30] ? row[30] : '' %>" 
+                    <%= row && row[30] ? 'disabled' : '' %>>
+                    <% if (row && row[30]) { %>
+                    <input type="hidden" name="wa_date" value="<%= row[30] %>">
+                    <% } %>
+                    </div>
+
+                    <div class="col">
+                    <label for="wa_status">Status WhatsApp</label>
+                    <select class="form-control form-control-sm" id="wa_status" name="wa_status"
+                    <%= row && row[31] ? 'disabled' : '' %> 
+                    >
+                    <option value="" disabled <%= !row || !row[31] ? 'selected' : '' %>>Pilih Status</option>
+                    <% messageOptions.forEach(function(option) { %>
+                    <option value="<%= option %>" <%= row && row[31] === option ? 'selected' : '' %>><%= option %></option>
+                    <% }); %>
+                    </select>
+                    <% if (row && row[31]) { %>
+                    <input type="hidden" name="wa_status" value="<%= row[31] %>">
+                    <% } %>
+                    </div>
+                    </div>
+                </div>
+
+                    <div class="form-group">
+                    <label for="wa_kronologi">Kronologi WhatsApp</label>
+                    <textarea class="form-control form-control-sm" id="wa_kronologi" name="wa_kronologi" rows="2"><%= row ? row[32] : '' %></textarea>
+                    </div>
+
+                    <input type="hidden" id="wa_tmp" name="wa_tmp" value="<%= row ? row[33] : '' %>">
+            </div>
+
+
+
+
+            <div class="tab-pane fade" id="call-debitur" role="tablist">
+                <div class="form-group">
+                    <label for="user_name_call">PIC Telpon</label>
+                    <select class="form-control form-control-sm" id="user_name_call" name="user_name_call"
+                    <%= row && row[34] ? 'disabled' : '' %> 
+                    >
+                    <option value="" disabled <%= !row || !row[34] ? 'selected' : '' %>>Pilih Nama User</option>
+                    <% userOptions.forEach(function(option) { %>
+                    <option value="<%= option %>" <%= row && row[34] === option ? 'selected' : '' %>><%= option %></option>
+                    <% }); %>
+                    </select>
+                    <% if (row && row[34]) { %>
+                    <input type="hidden" name="user_name_call" value="<%= row[34] %>">
+                    <% } %>
+                </div>
+
+                <div class="form-group">
+                    <div class="row"> 
+                    <!-- Tanggal Call Pertama -->
+                    <div class="col">
+                    <label for="call1_debt_date">Tanggal Percobaan Pertama</label>
+                    <% if (row && row[35]) { %>
+                    <input type="date" class="form-control form-control-sm" id="call1_debt_date_display" 
+                    value="<%= row[35] %>" disabled>
+                    <input type="hidden" name="call1_debt_date" value="<%= row[35] %>">
+                    <% } else { %>
+                    <input type="date" class="form-control form-control-sm" id="call1_debt_date" name="call1_debt_date" value="">
+                    <% } %>
+                    </div>
+
+                    <!-- Status Call Pertama -->
+                    <div class="col">
+                    <label for="call1_debt_status">Status Terhubung</label>
+                    <% if (row && row[36]) { %>
+                    <select class="form-control form-control-sm" id="call1_debt_status_display" disabled>
+                    <option value="<%= row[36] %>" selected><%= row[36] %></option>
+                    </select>
+                    <input type="hidden" name="call1_debt_status" value="<%= row[36] %>">
+                    <% } else { %>
+                    <select class="form-control form-control-sm" id="call1_debt_status" name="call1_debt_status">
+                    <option value="" disabled selected>Pilih Status</option>
+                    <% callOptions.forEach(function(option) { %>
+                    <option value="<%= option %>"><%= option %></option>
+                    <% }); %>
+                    </select>
+                    <% } %>
+                    </div>
+
+                    <!-- call1_debt_tmp (selalu hidden) -->
+                    <input type="hidden" id="call1_debt_tmp" name="call1_debt_tmp" value="<%= row ? row[37] : '' %>">
+
+                    <!-- Tanggal Call Kedua -->
+                    <div class="col">
+                    <label for="call2_debt_date">Tanggal Percobaan Kedua</label>
+                    <% if (row && row[38]) { %>
+                    <input type="date" class="form-control form-control-sm" id="call2_debt_date_display" 
+                    value="<%= row[38] %>" disabled>
+                    <input type="hidden" name="call2_debt_date" value="<%= row[38] %>">
+                    <% } else { %>
+                    <input type="date" class="form-control form-control-sm" id="call2_debt_date" name="call2_debt_date" value="">
+                    <% } %>
+                    </div>
+
+                    <!-- Status Call Kedua -->
+                    <div class="col">
+                    <label for="call2_debt_status">Status Terhubung</label>
+                    <% if (row && row[39]) { %>
+                    <select class="form-control form-control-sm" id="call2_debt_status_display" disabled>
+                    <option value="<%= row[39] %>" selected><%= row[39] %></option>
+                    </select>
+                    <input type="hidden" name="call2_debt_status" value="<%= row[39] %>">
+                    <% } else { %>
+                    <select class="form-control form-control-sm" id="call2_debt_status" name="call2_debt_status">
+                    <option value="" disabled selected>Pilih Status</option>
+                    <% callOptions.forEach(function(option) { %>
+                    <option value="<%= option %>"><%= option %></option>
+                    <% }); %>
+                    </select>
+                    <% } %>
+                    </div>
+                    <input type="hidden" id="call2_debt_tmp" name="call2_debt_tmp" value="<%= row ? row[40] : '' %>">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="call_debt_kronologi">Kronologi Menghubungi Debitur</label>
+                    <textarea class="form-control form-control-sm" id="call_debt_kronologi" name="call_debt_kronologi" rows="2"><%= row ? row[41] : '' %></textarea>
+                </div>
+            </div>       
+
+
+            <div class="tab-pane fade" id="call-econ" role="tablist">
+                <div class="form-group">
+                    <div class="row">
+                    <div class="col">
+                    <label for="call1_econ_date">Tanggal Percobaan Pertama</label>
+                    <% if (row && row[42]) { %>
+                    <input type="date" class="form-control form-control-sm" value="<%= row[42] %>" disabled>
+                    <input type="hidden" name="call1_econ_date" value="<%= row[42] %>">
+                    <% } else { %>
+                    <input type="date" class="form-control form-control-sm" id="call1_econ_date" name="call1_econ_date" value="">
+                    <% } %>
+                    </div>
+
+                    <div class="col">
+                    <label for="call1_econ_status">Status Terhubung</label>
+                    <% if (row && row[43]) { %>
+                    <select class="form-control form-control-sm" disabled>
+                    <option value="<%= row[43] %>" selected><%= row[43] %></option>
+                    </select>
+                    <input type="hidden" name="call1_econ_status" value="<%= row[43] %>">
+                    <% } else { %>
+                    <select class="form-control form-control-sm" id="call1_econ_status" name="call1_econ_status">
+                    <option value="" disabled selected>Pilih Status</option>
+                    <% callOptions.forEach(function(option) { %>
+                    <option value="<%= option %>"><%= option %></option>
+                    <% }); %>
+                    </select>
+                    <% } %>
+                    </div>
+
+                    <!-- call1_econ_tmp -->
+                    <input type="hidden" id="call1_econ_tmp" name="call1_econ_tmp" value="<%= row ? row[44] : '' %>">
+
+                    <div class="col">
+                    <label for="call2_econ_date">Tanggal Percobaan Kedua</label>
+                    <% if (row && row[45]) { %>
+                    <input type="date" class="form-control form-control-sm" value="<%= row[45] %>" disabled>
+                    <input type="hidden" name="call2_econ_date" value="<%= row[45] %>">
+                    <% } else { %>
+                    <input type="date" class="form-control form-control-sm" id="call2_econ_date" name="call2_econ_date" value="">
+                    <% } %>
+                    </div>
+
+                    <div class="col">
+                    <label for="call2_econ_status">Status Terhubung</label>
+                    <% if (row && row[46]) { %>
+                    <select class="form-control form-control-sm" disabled>
+                    <option value="<%= row[46] %>" selected><%= row[46] %></option>
+                    </select>
+                    <input type="hidden" name="call2_econ_status" value="<%= row[46] %>">
+                    <% } else { %>
+                    <select class="form-control form-control-sm" id="call2_econ_status" name="call2_econ_status">
+                    <option value="" disabled selected>Pilih Status</option>
+                    <% callOptions.forEach(function(option) { %>
+                    <option value="<%= option %>"><%= option %></option>
+                    <% }); %>
+                    </select>
+                  <% } %>
+                    </div>
+
+                    <input type="hidden" id="call2_econ_tmp" name="call2_econ_tmp" value="<%= row ? row[47] : '' %>">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="call_econ_kronologi">Kronologi Menghubungi EC</label>
+                    <textarea class="form-control form-control-sm" id="call_econ_kronologi" name="call_econ_kronologi" rows="2"><%= row ? row[48] : '' %></textarea>
+                </div>
+             </div>
+
+
+
+            <div class="tab-pane fade" id="call-other" role="tablist">
+                <div class="form-group">
+                    <div class="row">
+                    <div class="col">
+                    <label for="new_contact">Nomor Kontak Baru</label>
+                    <% if (row && row[49]) { %>
+                    <input type="text" class="form-control form-control-sm" value="<%= row[49] %>" disabled>
+                    <input type="hidden" name="new_contact" value="<%= row[49] %>">
+                    <% } else { %>
+                    <input type="text" class="form-control form-control-sm" id="new_contact" name="new_contact" value="">
+                    <% } %>
+                    </div>
+
+                    <div class="col">
+                    <label for="call_other_date">Tanggal Menghubungi</label>
+                    <% if (row && row[50]) { %>
+                    <input type="date" class="form-control form-control-sm" value="<%= row[50] %>" disabled>
+                    <input type="hidden" name="call_other_date" value="<%= row[50] %>">
+                    <% } else { %>
+                    <input type="date" class="form-control form-control-sm" id="call_other_date" name="call_other_date" value="">
+                    <% } %>
+                    </div>
+
+                    <div class="col">
+                    <label for="call_other_status">Status Terhubung</label>
+                    <% if (row && row[51]) { %>
+                    <select class="form-control form-control-sm" disabled>
+                    <option selected><%= row[51] %></option>
+                    </select>
+                    <input type="hidden" name="call_other_status" value="<%= row[51] %>">
+                    <% } else { %>
+                    <select class="form-control form-control-sm" id="call_other_status" name="call_other_status">
+                    <option value="" disabled selected>Pilih Status</option>
+                    <% callOptions.forEach(function(option) { %>
+                    <option value="<%= option %>"><%= option %></option>
+                    <% }); %>
+                    </select>
+                    <% } %>
+                    </div>
+                    </div>
+                </div>
+                    <input type="hidden" id="call_other_tmp" name="call_other_tmp" value="<%= row ? row[52] : '' %>">
+
+                <div class="form-group">
+                    <label for="call_other_kronologi">Kronologi Nomor Baru</label>
+                    <textarea class="form-control form-control-sm" id="call_other_kronologi" name="call_other_kronologi" rows="2"><%= row ? row[53] : '' %></textarea>
+                </div>
+            </div>
+ 
+
+        <div class="tab-pane fade" id="visit" role="tablist">
+                <div class="form-group">
+                    <label for="user_name_visit">PIC Kunjungan</label>
+                    <select class="form-control form-control-sm" id="user_name_visit" name="user_name_visit"
+                    <%= row && row[54] ? 'disabled' : '' %> 
+                    >
+                    <option value="" disabled <%= !row || !row[54] ? 'selected' : '' %>>Pilih Nama User</option>
+                    <% userOptions.forEach(function(option) { %>
+                    <option value="<%= option %>" <%= row && row[54] === option ? 'selected' : '' %>><%= option %></option>
+                    <% }); %>
+                    </select>
+                    <% if (row && row[54]) { %>
+                    <input type="hidden" name="user_name_visit" value="<%= row[54] %>">
+                    <% } %>
+                </div>
+
+
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-6">
+                        <div class="form-group">
+                        <label for="visit_date">Tanggal Visit</label>
+                        <% if (row && row[55]) { %>
+                        <input type="date" class="form-control form-control-sm mb-3" value="<%= row[55] %>" disabled>
+                        <input type="hidden" name="visit_date" value="<%= row[55] %>">
+                        <% } else { %>
+                        <input type="date" class="form-control form-control-sm mb-3" id="visit_date" name="visit_date" value="">
+                        <% } %>
+
+                        <label for="visit_Poto">Photo Visit</label>
+                        <input type="file" class="form-control form-control-sm mb-3" id="visit_Poto" name="visit_Poto" multiple accept="image/*" onchange="previewImages(event)">
+                        </div>
+                        </div>
+
+                        <div class="col-md-6">
+                        <label>Lihat Gambar:</label>
+                        <div 
+                            style="
+                              border: 1.5px solid green; 
+                              padding: 10px; 
+                              border-radius: 8px; 
+                              min-height: 85px;
+                              display: flex; 
+                              flex-wrap: wrap; 
+                              gap: 8px;
+                              align-items: flex-start;
+                            "
+                            id="previewContainer">
+                        </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="visit_kronologi">Kronologi Kunjungan</label>
+                    <textarea class="form-control form-control-sm" id="visit_kronologi" name="visit_kronologi" rows="2"><%= row ? row[57] : '' %></textarea>
+                </div>
+
+                <div class="form-group">
+                    <div class="row">
+                    <div class="col">
+                    <label for="visit_location">Alamat Lokasi Unit Terakhir</label>
+                    <input type="text" class="form-control form-control-sm" id="visit_location" name="visit_location" value="<%= row[58] %>">
+                    </div>
+                  <div class="col">
+                    <label for="janji_bayar">Tanggal Janji Bayar</label>
+                    <input type="date" class="form-control form-control-sm" id="janji_bayar" name="janji_bayar" value="<%= row[59] %>">
+                </div>
+                </div>
+                </div>
+                <div class="form-group">
+                    <label for="action_plan">Action Plan</label>
+                    <textarea class="form-control form-control-sm" id="action_plan" name="action_plan" rows="3"><%= row ? row[60] : '' %></textarea>
+                </div>
+        </div>   
+
+            <div class="tab-pane fade" id="eksternal" role="tablist">
+                 <div class="form-group">
+                        <label for="sk_date">Tanggal SK</label>
+                        <% if (row && row[61]) { %>
+                        <input type="date" class="form-control form-control-sm mb-3" value="<%= row[61] %>" disabled>
+                        <input type="hidden" name="sk_date" value="<%= row[61] %>">
+                        <% } else { %>
+                        <input type="date" class="form-control form-control-sm mb-3" id="sk_date" name="sk_date" value="">
+                        <% } %>
+                </div> 
+                <div class="form-group">
+                    <label for="result_external">Hasil Assign Eksternal</label>
+                    <textarea class="form-control form-control-sm" id="result_external" name="result_external" rows="3"><%= row ? row[62] : '' %></textarea>
+                </div>
+            </div>
+
+
+
+</div> <!-- .tab-content -->
+</div>  <!-- .form-section --> 
+
+
+<hr style="border-color: blue;">
+
+
+
+<script>
+function previewImages(event) {
+  const container = document.getElementById('previewContainer');
+  container.innerHTML = ''; // Bersihkan preview sebelumnya
+
+  const files = event.target.files;
+  for (let i = 0; i < files.length; i++) {
+    const img = document.createElement('img');
+    img.style.width = '100px';
+    img.style.marginRight = '5px';
+    img.src = URL.createObjectURL(files[i]);
+    container.appendChild(img);
+  }
+}
+</script>
+
+
+<script>
+document.getElementById('copyButton').addEventListener('click', function(e) {
+e.preventDefault(); // Cegah default behavior <a>
+var phoneNumberInput = document.getElementById('debt_phone');    
+phoneNumberInput.select();
+phoneNumberInput.setSelectionRange(0, 99999); // Untuk perangkat mobile
+document.execCommand('copy');
+alert('Phone number copied to clipboard: ' + phoneNumberInput.value);
+});
+</script>    
+<script>
+document.getElementById('copyButton2').addEventListener('click', function(e) {
+e.preventDefault(); // Cegah default behavior <a>
+var phoneNumberInput = document.getElementById('econ_phone');    
+phoneNumberInput.select();
+phoneNumberInput.setSelectionRange(0, 99999); // Untuk perangkat mobile
+document.execCommand('copy');
+alert('Phone number copied to clipboard: ' + phoneNumberInput.value);
+});
+</script> 
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+const waStatus = document.getElementById("wa_status");
+const waTmp = document.getElementById("wa_tmp");
+if (waStatus && waTmp) {
+waStatus.addEventListener("change", function () {
+const now = new Date();
+const pad = n => String(n).padStart(2, '0');
+const timestamp = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;    
+      waTmp.value = timestamp;
+    });
+  }
+});
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+const callStatus1 = document.getElementById("call1_debt_status");
+const callTmp1 = document.getElementById("call1_debt_tmp");
+if (callStatus1 && callTmp1) {
+callStatus1.addEventListener("change", function () {
+const now = new Date();
+const pad = n => String(n).padStart(2, '0');
+const timestamp = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;    
+      callTmp1.value = timestamp;
+    });
+  }
+});
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+const callStatus2 = document.getElementById("call2_debt_status");
+const callTmp2 = document.getElementById("call2_debt_tmp");
+if (callStatus2 && callTmp2) {
+callStatus2.addEventListener("change", function () {
+const now = new Date();
+const pad = n => String(n).padStart(2, '0');
+const timestamp = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;    
+      callTmp2.value = timestamp;
+    });
+  }
+});
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+const callStatus3 = document.getElementById("call1_econ_status");
+const callTmp3 = document.getElementById("call1_econ_tmp");
+if (callStatus3 && callTmp3) {
+callStatus3.addEventListener("change", function () {
+const now = new Date();
+const pad = n => String(n).padStart(2, '0');
+const timestamp = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;    
+      callTmp3.value = timestamp;
+    });
+  }
+});
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+const callStatus4 = document.getElementById("call2_econ_status");
+const callTmp4 = document.getElementById("call2_econ_tmp");
+if (callStatus4 && callTmp4) {
+callStatus4.addEventListener("change", function () {
+const now = new Date();
+const pad = n => String(n).padStart(2, '0');
+const timestamp = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;    
+      callTmp4.value = timestamp;
+    });
+  }
+});
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+const callStatus5 = document.getElementById("call_other_status");
+const callTmp5 = document.getElementById("call_other_tmp");
+if (callStatus5 && callTmp5) {
+callStatus5.addEventListener("change", function () {
+const now = new Date();
+const pad = n => String(n).padStart(2, '0');
+const timestamp = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;    
+      callTmp5.value = timestamp;
+    });
+  }
+});
+</script>
+<script>
+document.querySelector('button[type="reset"]').addEventListener('click', () => {
+  const container = document.getElementById('previewContainer');
+  if (container) container.innerHTML = '';
+});
+</script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const resetBtn = document.querySelector('button[type="reset"]');
+    const previewContainer = document.getElementById('previewContainer');
+    const fileInput = document.getElementById('visit_Poto');
+
+    resetBtn.addEventListener('click', function () {
+      // Hapus preview gambar
+      if (previewContainer) {
+        previewContainer.innerHTML = '';
+      }
+
+      // Hapus file yang terpilih di input file
+      if (fileInput) {
+        fileInput.value = '';
+      }
+    });
+  });
+</script>
+
+<button type="submit" class="btn btn-primary btn-sm">
+<%= editMode ? 'Update Data' : 'Submit' %>
+</button>
+<a href="/data" class="btn btn-secondary btn-sm">Back to Data Table</a>
+<button type="reset" class="btn btn-warning btn-sm">
+    Reset Form
+  </button>
+
+
+
+</form>
+</div>
+            <footer style="position: fixed; bottom: 10px; right: 10px;">
+            <a href="mailto:suyuti.fatah@akulaku.com" title="Contact Support">
+            <i class="fas fa-info-circle" style="font-size: 24px; color: #007bff;"></i>
+            </a>
+</footer>
+<!-- jQuery (required for Bootstrap 4) -->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+<!-- Popper.js -->
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+
+<!-- Bootstrap 4 JS -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+</body>
+</html>

@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AFI | Productivity Collection</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap4.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.4.0/css/responsive.bootstrap4.min.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap4.min.js"></script>
+  <script src="https://cdn.datatables.net/responsive/2.4.0/js/dataTables.responsive.min.js"></script>
+  <script src="https://cdn.datatables.net/responsive/2.4.0/js/responsive.bootstrap4.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+
+  <style>
+body {
+    font-family: 'Inter', Arial, sans-serif;
+    font-size: 11px;
+    background-color: #f9f9f9;
+    color: #333;
+}
+/* Logo Area */
+.logo-container {
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+.logo-container img {
+    max-width: 70px;
+}
+.logo-title {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+.logo-subtitle {
+    font-size: 12px;
+    color: #777;
+}
+
+  .dataTables_wrapper {
+    margin-top: 20px;
+    margin-bottom: 10px;
+  }
+
+  .table {
+    border-collapse: separate;
+    border-spacing: 0;
+    border: none;
+    background-color: #ffffff;
+    box-shadow: 0 0 8px rgba(0,0,0,0.05);
+    border-radius: 5px;
+    overflow: hidden;
+    font-size: 11px;
+  }
+
+  .table thead th {
+    background-color: #f1f3f5;
+    color: #333;
+    font-weight: 500;
+    font-size: 11px;
+    border-bottom: 2px solid #dee2e6;
+    padding: 8px 8px;
+    vertical-align: middle;
+  }
+
+  .table-striped tbody tr:nth-of-type(odd) {
+    background-color: #fafafa;
+  }
+
+  .table tbody td {
+    padding: 8px 8px;
+    vertical-align: middle;
+    font-size: 11px;
+  }
+
+  .table-hover tbody tr:hover {
+    background-color: #f0f4f8;
+  }
+
+  .dataTables_length select,
+  .dataTables_filter input {
+    font-size: 10px;
+    padding: 4px;
+    height: 20px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+  }
+
+  .dataTables_wrapper .dataTable th,
+  .dataTables_wrapper .dataTable td {
+    padding-top: 6px;
+    padding-bottom: 6px;
+  }
+
+  .dataTables_wrapper .dataTables_paginate .paginate_button {
+    margin: 0 2px !important;
+    padding: 0.20rem 0rem !important;
+    font-size: 0.75rem !important;
+    border-radius: 2px;
+    border: 1px solid transparent;
+  }
+
+  .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+    background-color: #007bff !important;
+    color: white !important;
+    border: 1px solid #007bff !important;
+  }
+
+  .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    background-color: #e9ecef !important;
+    border: 1px solid #ced4da !important;
+  }
+
+  .edit-link {
+    color: #007bff;
+    font-size: 12px;
+    cursor: pointer;
+  }
+
+  .edit-link:hover {
+    color: #0056b3;
+    text-decoration: underline;
+  }
+
+  .dataTables_filter label,
+  .dataTables_length label {
+    font-size: 10px;
+    font-weight: 500;
+  }
+
+  .dataTables_info {
+    font-size: 10px;
+    color: #555;
+  }
+  .custom-btn {
+    background-color: green; /* Atur warna latar belakang menjadi hijau */
+    color: white; /* Atur warna teks menjadi putih */
+    border: none; /* Hapus border default */
+    padding: 0.2rem 0.5rem; /* Sesuaikan padding */
+    font-size: 0.7rem; /* Sesuaikan ukuran font */
+    line-height: 1.4; /* Sesuaikan tinggi baris jika perlu */
+    }
+.dataTables_filter input {
+  height: 25px !important;       /* Sesuaikan tinggi input */
+  line-height: 1.2;
+  padding: 4px 10px;
+  font-size: 11px;
+  border-radius: 4px;
+}
+.form-container {
+    background-color: #fff;
+    padding: 15px 25px;
+    border-radius: 4px;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+.table-responsive {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+
+</style>
+
+</head>
+<body>
+  <div class="container" style="max-width: 1300px;">
+ 
+
+    <!-- DataTable -->
+    <div class="form-container">
+      <div class="table-responsive">
+        <table id="data-table" class="table table-striped table-hover table-bordered nowrap" style="width:100%">
+   <div class="logo-container">
+      <img src="https://static.wixstatic.com/media/30fa2e_387864f2775646d8ba60bb154d579510~mv2.png" alt="Logo Akulaku" class="img-fluid mx-auto d-block">
+      <p class="logo-title">Productivity Collection Non Retail</p>
+      <p class="logo-subtitle">PT Akulaku Finance Indonesia</p>
+    </div>
+
+    <!-- Filter Form -->
+      <div class="mb-3 pb-2 border-bottom">
+          <form method="GET" action="/data" class="mb-0">
+          <div class="d-flex align-items-center" style="gap: 8px;">
+          <label for="main_product" class="mb-0" style="font-size: 11px; font-weight: 500;">Select Product:</label>
+          <select name="main_product" id="main_product"
+          class="form-control form-control-sm"
+          style="width: 200px; font-size: 11px; font-family: 'Inter', sans-serif;"
+          onchange="this.form.submit()">
+          <option value="">All Product</option>
+          <option value="Auto Loan" <%= selectedProduct === 'Auto Loan' ? 'selected' : '' %>>Auto Loan</option>
+          <option value="Car Loan" <%= selectedProduct === 'Car Loan' ? 'selected' : '' %>>Car Loan</option>
+          <option value="Heavy Equipment" <%= selectedProduct === 'Heavy Equipment' ? 'selected' : '' %>>Heavy Equipment</option>
+          </select>
+          </div>
+        </form>
+      </div>
+      <thead>
+        <tr>
+        <th>Main Product</th>
+        <th>Nomor Kontrak</th>
+        <th>Nama Debitur</th>
+        <th>Telepon</th>
+        <th>Alamat</th>
+        <th>Emergency Contact : </th>
+        <th>EC Phone : </th>
+        <th>Tenour</th>
+        <th>Actual Period</th>
+        <th>Installment</th> 
+        <th>Bill Date : </th> 
+        <th>Due Date</th> 
+        <th>Overdue</th>
+        <th>Repayment</th> 
+        <th>Outstanding Principal : </th>
+        <th>Status Debitur : </th>
+        <th>PIC Warning Letter : </th>
+        <th>Schedule Delivery : </th>
+        <th>WL1 Notice Number : </th>
+        <th>WL1 Actual Delivery : </th>
+        <th>WL1 Status : </th>
+        <th>Schedule Delivery : </th>
+        <th>WL2 Notice Number : </th>
+        <th>WL2 Actual Delivery : </th>
+        <th>WL2 Status : </th>
+        <th>Schedule Delivery : </th>
+        <th>Final Notice Number : </th>
+        <th>Final Actual Delivery : </th>
+        <th>Final Status : </th>
+        <th>Update</th>
+        </tr>
+      </thead>
+      <tbody>
+      <% data.forEach(function(row, index) { %>
+      <tr>
+                <td><%= row[0] %></td> <!-- Main Product -->
+                <td><%= row[1] %></td> <!-- Agreement Number -->
+                <td><%= row[2] %></td> <!-- Debitur Name -->
+                <td><%= row[3] %></td> <!-- Phone Debtor -->
+                <td><%= row[4] %></td> <!-- Billing Address -->
+                <td><%= row[5] %></td> <!-- Emergency Contact -->
+                <td><%= row[6] %></td> <!-- EC Phone -->
+                <td><%= row[7] %></td> <!-- Tenour -->
+                <td><%= row[8] %></td> <!-- Current Period-->
+                <td><%= row[9] %></td> <!-- Installment -->
+                <td><%= row[10] %></td> <!-- Bill Date -->  
+                <td><%= row[11] %></td> <!-- Due Date -->     
+                <td><%= row[12] %></td> <!-- Overdue -->
+                <td><%= row[13] %></td> <!-- Repayment -->        
+                <td><%= row[14] %></td> <!-- Outstanding Principal -->
+                <td><%= row[15] %></td> <!-- Status Debitur -->
+                <td><%= row[16] %></td> <!-- Surat Peringatan PIC -->
+                <td><%= row[17] %></td> <!-- SP1 Issuance Date -->
+                <td><%= row[18] %></td> <!-- SP1 No -->
+                <td><%= row[19] %></td> <!-- SP1 Send Date -->
+                <td><%= row[20] %></td> <!-- SP1 Status-->
+                <td><%= row[21] %></td> <!-- SP2 Issuance Date -->
+                <td><%= row[22] %></td> <!-- SP2 No -->
+                <td><%= row[23] %></td> <!-- SP2 Send Date -->
+                <td><%= row[24] %></td> <!-- SP2 Status-->
+                <td><%= row[25] %></td> <!-- SP3 Issuance Date -->
+                <td><%= row[26] %></td> <!-- SP3 No -->
+                <td><%= row[27] %></td> <!-- SP3 Send Date -->
+                <td><%= row[28] %></td> <!-- SSP3 Status -->
+                <td class="text-center">
+      <% if (row[1] && row[1] !== '') { %>
+       <a href="/edit-id/<%= encodeURIComponent(row[0]) %>/<%= row[1] %>" class="fa fa-duotone fa-pen-to-square edit-link"></a>
+      <% } else { %>
+        <span class="fa fa-duotone fa-pen-to-square edit-link" style="color: grey; cursor: not-allowed;" title="Edit    disabled"></span>
+      <% } %>
+      </td>
+      </tr>
+      <% }) %>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+<script>
+  $(document).ready(function() {
+    var table = $('#data-table').DataTable({
+      pageLength: 7,
+      lengthMenu: [
+        [5, 10, 25, 50, 100, -1],
+        ['5', 10, 25, 50, 100, 'All']
+      ],
+      responsive: true,
+      order: [[0, 'asc'], [11, 'asc']],
+      columnDefs: [
+        {
+          targets: [1, 2, 3, 4, 7, 8, 9, 11, 12,13, 29],
+          className: 'all'
+        },
+        {
+          targets: [3],
+          className: 'dt-body-center',
+          render: function(data, type, row, meta) {
+            if (type === 'display') {
+              var phoneNumbers = data.split('/');
+              var primaryPhone = phoneNumbers[0].trim();
+              var copyButtonId = 'copyButton_' + meta.row;
+              data = '<button class="btn btn-sm btn-primary custom-btn" id="' + copyButtonId + '" data-phone="' + primaryPhone + '">' + '<i class="fas fa-copy" style="color:white;"></i> Copy</button>';
+            }
+            return data;
+          }
+        },
+            {
+            targets: [4], // Target the 6th column (index 5) for the Maps link
+            className: 'dt-body-center',
+            render: function(data, type, row, meta) {
+            if (type === 'display') {
+            data = '<a href="https://maps.google.com/maps?q=' + encodeURIComponent(data) + '" target="_blank">' +'<i class="fa-solid fa-map-marked-alt" style="font-size:20px;color:green"></i>' +'</a>';
+            }
+            return data;
+            }
+            },
+        {
+          targets: [7,8],
+          className: 'dt-body-center',
+          render: function(data, type, row, meta) {
+            return '<span style="font-weight;">' + data + '</span>';
+          }
+        },
+        {
+          targets: [12],
+          className: 'dt-body-center',
+          render: function(data, type, row, meta) {
+            return '<span style="font-weight: bold;color:red;">' + data + '</span>';
+          }
+        },
+        {
+          targets: [9, 11, 14, 13],
+          className: 'dt-body-right',
+          render: function(data, type, row, meta) {
+            return '<span style="font-weight: regular;">' + data + '</span>';
+          }
+        },
+        {
+          targets: 0,
+          orderable: false
+        }
+      ]
+    });
+
+  // Trigger filter saat halaman pertama kali dimuat
+  $('#filterDropdown').trigger('change');
+});
+
+$(document).ready(function() {
+  // Event listener untuk tombol salin
+  $(document).on('click', '.custom-btn', function() {
+    var phoneNumber = $(this).data('phone'); // Ambil nomor telepon dari atribut data
+    navigator.clipboard.writeText(phoneNumber).then(function() {
+      alert('Nomor telepon berhasil disalin: ' + phoneNumber);
+    }).catch(function(err) {
+      console.error('Gagal menyalin teks ke clipboard: ', err);
+    });
+  });
+});
+
+</script>
+
+
+
+
+<footer style="position: fixed; bottom: 10px; right: 10px;">
+  <a href="mailto:suyuti.fatah@akulaku.com" title="Contact Support">
+  <i class="fas fa-info-circle" style="font-size: 24px; color: #007bff;"></i>
+  </a>
+</footer>
+</body>
+</html>
+</body>
+</html>

@@ -112,10 +112,12 @@ app.post('/login', async (req, res) => {
       row[1] === password
     );
 
-    if (userFound) {
-      req.session.loggedIn = true;
-      req.session.email = email;
-      res.redirect('/data');
+if (userFound) {
+  req.session.loggedIn = true;
+  req.session.email = email;
+  req.session.userName = userFound[2]; // Nama user dari kolom M
+  req.session.loginTime = Date.now();  // ⬅️ Tambahkan ini
+  res.redirect('/data');
     } else {
       res.render('login', { error: 'Email atau Password salah' });
     }
@@ -154,7 +156,8 @@ app.get('/data', requireLogin, async (req, res) => {
 
     res.render('dataTable', {
       data: filteredData,
-      selectedProduct
+      selectedProduct,
+      session: req.session
     });
   } catch (error) {
     console.error('Error fetching data:', error);

@@ -102,7 +102,7 @@ app.post('/login', async (req, res) => {
   try {
     const response = await sheets.spreadsheets.values.get({
       spreadsheetId: SPREADSHEET_ID,
-      range: 'Dropdown!L2:M15',
+      range: 'Dropdown!L2:N15',
     });
 
     const users = response.data.values || [];

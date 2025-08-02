@@ -154,11 +154,13 @@ app.get('/data', requireLogin, async (req, res) => {
   );
 });
 
-    res.render('dataTable', {
-      data: filteredData,
-      selectedProduct,
-      userName: req.session.userName
-    });
+res.render('dataTable', {
+  data: filteredData,
+  selectedProduct,
+  userName: req.session.userName,
+  loginTime: req.session.loginTime // ✅ tambahkan ini
+});
+
   } catch (error) {
     console.error('Error fetching data:', error);
     res.status(500).send('Error loading data');

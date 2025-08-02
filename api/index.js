@@ -157,7 +157,7 @@ app.get('/data', requireLogin, async (req, res) => {
     res.render('dataTable', {
       data: filteredData,
       selectedProduct,
-      session: req.session
+      userName: req.session.userName
     });
   } catch (error) {
     console.error('Error fetching data:', error);

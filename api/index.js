@@ -115,7 +115,7 @@ app.post('/login', async (req, res) => {
 if (userFound) {
   req.session.loggedIn = true;
   req.session.email = email;
-  req.session.userName = userFound[3]; // Nama user dari kolom M
+  req.session.userName = userFound[2]; // Nama user dari kolom M
   req.session.loginTime = Date.now();  // ⬅️ Tambahkan ini
   res.redirect('/data');
     } else {

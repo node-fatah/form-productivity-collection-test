@@ -189,7 +189,8 @@ app.get('/add', requireLogin, async (req, res) => {
       messageOptions,
       callOptions,
       suratOptions,
-      visitOptions
+      visitOptions,
+      userName: req.session.userName //baru pasang
     });
   } catch (error) {
     console.error('Error fetching dropdown data:', error);

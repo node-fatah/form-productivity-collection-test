@@ -310,19 +310,21 @@ button,
 <br>
 <div class="tab-content">
             <div class="tab-pane fade show active" id="surat-peringatan" role="tablist">
-                    <div class="form-group">
-                    <label for="user_name_sp">PIC Surat Peringatan</label>
-                    <select class="form-control form-control-sm" id="user_name_sp" name="user_name_sp"
-                    <%= row && row[16] ? 'disabled' : '' %>>
-                    <option value="" disabled <%= !row || !row[16] ? 'selected' : '' %>>Pilih Nama User</option>
-                    <% userOptions.forEach(function(option) { %>
-                    <option value="<%= option %>" <%= row && row[16] === option ? 'selected' : '' %>><%= option %></option>
-                    <% }); %>
-                    </select>
-                    <% if (row && row[16]) { %>
-                    <input type="hidden" name="user_name_sp" value="<%= row[16] %>">
-                    <% } %>
-                    </div>
+<div class="form-group">
+  <label for="user_name_sp">PIC Surat Peringatan</label>
+  <select class="form-control form-control-sm" id="user_name_sp" name="user_name_sp"
+    <%= row && row[16] ? 'disabled' : '' %>>
+    <option value="" disabled <%= !row || !row[16] ? 'selected' : '' %>>Pilih Nama User</option>
+    <% const spOptions = (!row || !row[16]) ? [userName] : userOptions; %>
+    <% spOptions.forEach(function(option) { %>
+      <option value="<%= option %>" <%= row && row[16] === option ? 'selected' : '' %>><%= option %></option>
+    <% }); %>
+  </select>
+  <% if (row && row[16]) { %>
+    <input type="hidden" name="user_name_sp" value="<%= row[16] %>">
+  <% } %>
+</div>
+
 
   <div class="form-group">
   <div class="row">
@@ -403,20 +405,21 @@ button,
 
 
             <div class="tab-pane fade" id="whatsapp" role="tablist">
-                <div class="form-group">
-                    <label for="user_name_wa">PIC Whatsapp</label>
-                    <select class="form-control form-control-sm" id="user_name_wa" name="user_name_wa"
-                    <%= row && row[29] ? 'disabled' : '' %> 
-                    >
-                    <option value="" disabled <%= !row || !row[29] ? 'selected' : '' %>>Pilih Nama User</option>
-                    <% userOptions.forEach(function(option) { %>
-                    <option value="<%= option %>" <%= row && row[29] === option ? 'selected' : '' %>><%= option %></option>
-                    <% }); %>
-                    </select>
-                    <% if (row && row[29]) { %>
-                    <input type="hidden" name="user_name_wa" value="<%= row[29] %>">
-                    <% } %>
-                </div>                 
+<div class="form-group">
+  <label for="user_name_wa">PIC Whatsapp</label>
+  <select class="form-control form-control-sm" id="user_name_wa" name="user_name_wa"
+    <%= row && row[29] ? 'disabled' : '' %>>
+    <option value="" disabled <%= !row || !row[29] ? 'selected' : '' %>>Pilih Nama User</option>
+    <% const waOptions = (!row || !row[29]) ? [userName] : userOptions; %>
+    <% waOptions.forEach(function(option) { %>
+      <option value="<%= option %>" <%= row && row[29] === option ? 'selected' : '' %>><%= option %></option>
+    <% }); %>
+  </select>
+  <% if (row && row[29]) { %>
+    <input type="hidden" name="user_name_wa" value="<%= row[29] %>">
+  <% } %>
+</div>
+            
 
                 <div class="form-group">
                     <div class="row">
@@ -459,20 +462,21 @@ button,
 
 
             <div class="tab-pane fade" id="call-debitur" role="tablist">
-                <div class="form-group">
-                    <label for="user_name_call">PIC Telpon</label>
-                    <select class="form-control form-control-sm" id="user_name_call" name="user_name_call"
-                    <%= row && row[34] ? 'disabled' : '' %> 
-                    >
-                    <option value="" disabled <%= !row || !row[34] ? 'selected' : '' %>>Pilih Nama User</option>
-                    <% userOptions.forEach(function(option) { %>
-                    <option value="<%= option %>" <%= row && row[34] === option ? 'selected' : '' %>><%= option %></option>
-                    <% }); %>
-                    </select>
-                    <% if (row && row[34]) { %>
-                    <input type="hidden" name="user_name_call" value="<%= row[34] %>">
-                    <% } %>
-                </div>
+<div class="form-group">
+  <label for="user_name_call">PIC Telpon</label>
+  <select class="form-control form-control-sm" id="user_name_call" name="user_name_call"
+    <%= row && row[34] ? 'disabled' : '' %>>
+    <option value="" disabled <%= !row || !row[34] ? 'selected' : '' %>>Pilih Nama User</option>
+    <% const callOptionsUser = (!row || !row[34]) ? [userName] : userOptions; %>
+    <% callOptionsUser.forEach(function(option) { %>
+      <option value="<%= option %>" <%= row && row[34] === option ? 'selected' : '' %>><%= option %></option>
+    <% }); %>
+  </select>
+  <% if (row && row[34]) { %>
+    <input type="hidden" name="user_name_call" value="<%= row[34] %>">
+  <% } %>
+</div>
+
 
                 <div class="form-group">
                     <div class="row"> 
@@ -672,20 +676,21 @@ button,
  
 
         <div class="tab-pane fade" id="visit" role="tablist">
-                <div class="form-group">
-                    <label for="user_name_visit">PIC Kunjungan</label>
-                    <select class="form-control form-control-sm" id="user_name_visit" name="user_name_visit"
-                    <%= row && row[54] ? 'disabled' : '' %> 
-                    >
-                    <option value="" disabled <%= !row || !row[54] ? 'selected' : '' %>>Pilih Nama User</option>
-                    <% userOptions.forEach(function(option) { %>
-                    <option value="<%= option %>" <%= row && row[54] === option ? 'selected' : '' %>><%= option %></option>
-                    <% }); %>
-                    </select>
-                    <% if (row && row[54]) { %>
-                    <input type="hidden" name="user_name_visit" value="<%= row[54] %>">
-                    <% } %>
-                </div>
+<div class="form-group">
+  <label for="user_name_visit">PIC Kunjungan</label>
+  <select class="form-control form-control-sm" id="user_name_visit" name="user_name_visit"
+    <%= row && row[54] ? 'disabled' : '' %>>
+    <option value="" disabled <%= !row || !row[54] ? 'selected' : '' %>>Pilih Nama User</option>
+    <% const visitOptionsUser = (!row || !row[54]) ? [userName] : userOptions; %>
+    <% visitOptionsUser.forEach(function(option) { %>
+      <option value="<%= option %>" <%= row && row[54] === option ? 'selected' : '' %>><%= option %></option>
+    <% }); %>
+  </select>
+  <% if (row && row[54]) { %>
+    <input type="hidden" name="user_name_visit" value="<%= row[54] %>">
+  <% } %>
+</div>
+
 
 
                 <div class="form-group">

@@ -68,7 +68,7 @@ async function fetchDataFromGoogleSheet() {
   try {
     const response = await sheets.spreadsheets.values.get({
       spreadsheetId: SPREADSHEET_ID,
-      range: `${SHEET_NAME}!A1:BK`, // Ambil data secara langsung dari Google Sheets
+      range: `${SHEET_NAME}!A1:BL`, // Ambil data secara langsung dari Google Sheets
     });
     return response.data.values.slice(2) || []; // Exclude header
   } catch (error) {
@@ -213,7 +213,7 @@ app.post('/submit', requireLogin, async (req, res) => {
           call2_econ_date, call2_econ_status, call2_econ_tmp,call_econ_kronologi,
           new_contact, call_other_date, call_other_status, call_other_tmp, call_other_kronologi,
           user_name_visit, 
-          visit_date, visit_Poto, visit_kronologi, visit_location, janji_bayar, action_plan,
+          visit_date, visit_ke, visit_Poto, visit_kronologi, visit_location, janji_bayar, action_plan,
           sk_date, result_external} = req.body;
           try {
     await sheets.spreadsheets.values.append({
@@ -234,7 +234,7 @@ app.post('/submit', requireLogin, async (req, res) => {
           call2_econ_date, call2_econ_status, call2_econ_tmp,call_econ_kronologi,
           new_contact, call_other_date, call_other_status, call_other_tmp, call_other_kronologi,
           user_name_visit, 
-          visit_date, visit_Poto, visit_kronologi, visit_location, janji_bayar, action_plan,
+          visit_date, visit_ke, visit_Poto, visit_kronologi, visit_location, janji_bayar, action_plan,
           sk_date, result_external]],
       },
     });
@@ -299,11 +299,11 @@ app.post('/update/:main_product/:agreement_number', upload.array('visit_Poto'), 
 
     const response = await sheets.spreadsheets.values.get({
       spreadsheetId: SPREADSHEET_ID,
-      range: `Dataset!A${index + 3}:BK${index + 3}`,
+      range: `Dataset!A${index + 3}:BL${index + 3}`,
     });
 
     const oldRow = response.data.values[0] || [];
-    const oldVisitPoto = oldRow[56] || '';
+    const oldVisitPoto = oldRow[57] || '';
     const oldLinkArray = oldVisitPoto ? oldVisitPoto.split('\n') : [];
 
     let newLinks = [];
@@ -331,13 +331,13 @@ app.post('/update/:main_product/:agreement_number', upload.array('visit_Poto'), 
       body.call1_econ_date, body.call1_econ_status, body.call1_econ_tmp,
       body.call2_econ_date, body.call2_econ_status, body.call2_econ_tmp, body.call_econ_kronologi,
       body.new_contact, body.call_other_date, body.call_other_status, body.call_other_tmp, body.call_other_kronologi,
-      body.user_name_visit, body.visit_date, visit_Poto, body.visit_kronologi, body.visit_location, body.janji_bayar, body.action_plan,
+      body.user_name_visit, body.visit_date, body.visit_ke, visit_Poto, body.visit_kronologi, body.visit_location, body.janji_bayar, body.action_plan,
       body.sk_date, body.result_external
     ];
 
     await sheets.spreadsheets.values.update({
       spreadsheetId: SPREADSHEET_ID,
-      range: `Dataset!A${index + 3}:BK${index + 3}`,
+      range: `Dataset!A${index + 3}:BL${index + 3}`,
       valueInputOption: 'USER_ENTERED',
       resource: { values: [values] },
     });

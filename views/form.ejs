@@ -749,7 +749,7 @@ button,
     </select>
     <input type="hidden" name="visit_ke" value="<%= row[56] %>">
   <% } else { %>
-    <select class="form-control form-control-sm mb-3" id="visit_ke" name="visit_ke" required>
+    <select class="form-control form-control-sm mb-3" id="visit_ke" name="visit_ke">
       <option value="" disabled selected>Pilih</option>
       <% for (let i = 1; i <= 4; i++) { %>
         <option value="<%= i %>">Ke-<%= i %></option>

@@ -286,61 +286,83 @@ app.get('/edit-id/:main_product/:agreement_number', requireLogin, async (req, re
 
 
 // Route to handle update
+// Route to handle update
 app.post('/update/:main_product/:agreement_number', upload.array('visit_Poto'), requireLogin, async (req, res) => {
   const { main_product, agreement_number } = req.params;
   const body = req.body;
 
   try {
     const data = await fetchDataFromGoogleSheet();
-    const index = data.findIndex(row => row[0] === main_product && row[1] === agreement_number);
-    if (index === -1) {
-      return res.status(404).send('Data tidak ditemukan');
-    }
 
-    const response = await sheets.spreadsheets.values.get({
-      spreadsheetId: SPREADSHEET_ID,
-      range: `Dataset!A${index + 3}:BL${index + 3}`,
-    });
+    let rowsToUpdate = [];
 
-    const oldRow = response.data.values[0] || [];
-    const oldVisitPoto = oldRow[57] || '';
-    const oldLinkArray = oldVisitPoto ? oldVisitPoto.split('\n') : [];
-
-    let newLinks = [];
-    if (req.files && req.files.length > 0) {
-      for (const file of req.files) {
-        const link = await uploadFile(file);
-        newLinks.push(link);
+    if (main_product.toLowerCase() === 'heavy equipment') {
+      // Cari semua baris dengan debitur_name yang sama
+      const targetDebitur = body.debitur_name;
+      rowsToUpdate = data
+        .map((row, idx) => ({ row, idx }))
+        .filter(item => item.row[2] === targetDebitur); // kolom ke-3 = debitur_name
+    } else {
+      // Default: hanya 1 baris
+      const index = data.findIndex(row => row[0] === main_product && row[1] === agreement_number);
+      if (index !== -1) {
+        rowsToUpdate.push({ row: data[index], idx: index });
       }
     }
 
-    const newLinkArray = newLinks.map((link, i) => {
-      const total = oldLinkArray.length + i + 1;
-      return `[Foto ${total}](${link})`;
-    });
-    const visit_Poto = [...oldLinkArray, ...newLinkArray].join('\n');
+    if (rowsToUpdate.length === 0) {
+      return res.status(404).send('Data tidak ditemukan');
+    }
 
-    const values = [
-      body.main_product, body.agrrement_number, body.debitur_name, body.debt_phone, body.alamat_debt, body.econ_name, body.econ_phone, body.tenor,
-      body.current_period, body.installment, body.bill_date, '', '', '', '', '',
-      '', '', '', '', body.sp1_status, '', '', '', body.sp2_status, 
-      '', '', '', body.sp3_status, 
-      body.user_name_wa, body.wa_date, body.wa_status, body.wa_kronologi, body.wa_tmp,
-      body.user_name_call, body.call1_debt_date, body.call1_debt_status, body.call1_debt_tmp,
-      body.call2_debt_date, body.call2_debt_status, body.call2_debt_tmp, body.call_debt_kronologi,
-      body.call1_econ_date, body.call1_econ_status, body.call1_econ_tmp,
-      body.call2_econ_date, body.call2_econ_status, body.call2_econ_tmp, body.call_econ_kronologi,
-      body.new_contact, body.call_other_date, body.call_other_status, body.call_other_tmp, body.call_other_kronologi,
-      body.user_name_visit, body.visit_date, body.visit_ke, visit_Poto, body.visit_kronologi, body.visit_location, body.janji_bayar, body.action_plan,
-      body.sk_date, body.result_external
-    ];
+    // Loop semua baris yang mau diupdate
+    for (const { row, idx } of rowsToUpdate) {
+      // Ambil data lama (untuk foto)
+      const response = await sheets.spreadsheets.values.get({
+        spreadsheetId: SPREADSHEET_ID,
+        range: `Dataset!A${idx + 3}:BL${idx + 3}`,
+      });
 
-    await sheets.spreadsheets.values.update({
-      spreadsheetId: SPREADSHEET_ID,
-      range: `Dataset!A${index + 3}:BL${index + 3}`,
-      valueInputOption: 'USER_ENTERED',
-      resource: { values: [values] },
-    });
+      const oldRow = response.data.values[0] || [];
+      const oldVisitPoto = oldRow[57] || '';
+      const oldLinkArray = oldVisitPoto ? oldVisitPoto.split('\n') : [];
+
+      let newLinks = [];
+      if (req.files && req.files.length > 0) {
+        for (const file of req.files) {
+          const link = await uploadFile(file);
+          newLinks.push(link);
+        }
+      }
+
+      const newLinkArray = newLinks.map((link, i) => {
+        const total = oldLinkArray.length + i + 1;
+        return `[Foto ${total}](${link})`;
+      });
+      const visit_Poto = [...oldLinkArray, ...newLinkArray].join('\n');
+
+      // Data baru yang mau disimpan
+      const values = [
+        body.main_product, body.agrrement_number, body.debitur_name, body.debt_phone, body.alamat_debt, body.econ_name, body.econ_phone, body.tenor,
+        body.current_period, body.installment, body.bill_date, '', '', '', '', '',
+        '', '', '', '', body.sp1_status, '', '', '', body.sp2_status,
+        '', '', '', body.sp3_status,
+        body.user_name_wa, body.wa_date, body.wa_status, body.wa_kronologi, body.wa_tmp,
+        body.user_name_call, body.call1_debt_date, body.call1_debt_status, body.call1_debt_tmp,
+        body.call2_debt_date, body.call2_debt_status, body.call2_debt_tmp, body.call_debt_kronologi,
+        body.call1_econ_date, body.call1_econ_status, body.call1_econ_tmp,
+        body.call2_econ_date, body.call2_econ_status, body.call2_econ_tmp, body.call_econ_kronologi,
+        body.new_contact, body.call_other_date, body.call_other_status, body.call_other_tmp, body.call_other_kronologi,
+        body.user_name_visit, body.visit_date, body.visit_ke, visit_Poto, body.visit_kronologi, body.visit_location, body.janji_bayar, body.action_plan,
+        body.sk_date, body.result_external
+      ];
+
+      await sheets.spreadsheets.values.update({
+        spreadsheetId: SPREADSHEET_ID,
+        range: `Dataset!A${idx + 3}:BL${idx + 3}`,
+        valueInputOption: 'USER_ENTERED',
+        resource: { values: [values] },
+      });
+    }
 
     res.redirect('/data');
   } catch (error) {
@@ -348,6 +370,7 @@ app.post('/update/:main_product/:agreement_number', upload.array('visit_Poto'), 
     res.status(500).send('Error updating data');
   }
 });
+
 
 
 

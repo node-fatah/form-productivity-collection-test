@@ -354,21 +354,21 @@ button,
 
     <!-- SP1 -->
     <div class="col-md-4">
-      <label for="sp1_date">Jadwal Kirim SP1</label>
+      <label for="sp1_date">1st RL Schedule</label>
       <input type="date" class="form-control form-control-sm" id="sp1_date" value="<%= row?.[17] || '' %>" disabled>
       <input type="hidden" name="sp1_date" value="<%= row?.[17] || '' %>">
 
-      <label for="sp1_no" class="mt-1">Nomor Surat</label>
+      <label for="sp1_no" class="mt-1">Notice Number</label>
       <input type="text" class="form-control form-control-sm" id="sp1_no_display" value="<%= row?.[18] || '' %>" disabled>
       <input type="hidden" name="sp1_no" value="<%= row?.[18] || '' %>">
 
-      <label for="sp1_send" class="mt-1">Actual Kirim SP</label>
+      <label for="sp1_send" class="mt-1">Actual Delivery</label>
       <input type="date" class="form-control form-control-sm" id="sp1_send_display" value="<%= row?.[19] || '' %>" disabled>
       <input type="hidden" name="sp1_send" value="<%= row?.[19] || '' %>">
 
-      <label for="sp1_status" class="mt-1">Status Pengiriman</label>
+      <label for="sp1_status" class="mt-1">Dispatch Status</label>
       <select class="form-control form-control-sm" id="sp1_status" name="sp1_status">
-        <option value="" disabled selected>Pilih Status</option>
+        <option value="" disabled selected>Select Status</option>
         <% suratOptions.forEach(function(option) { %>
           <option value="<%= option %>" <%= row?.[20] === option ? 'selected' : '' %>><%= option %></option>
         <% }); %>
@@ -377,21 +377,21 @@ button,
 
     <!-- SP2 -->
     <div class="col-md-4">
-      <label for="sp2_date">Jadwal Kirim SP2</label>
+      <label for="sp2_date">2nd RL Schedule</label>
       <input type="date" class="form-control form-control-sm" id="sp2_date" value="<%= row?.[21] || '' %>" disabled>
       <input type="hidden" name="sp2_date" value="<%= row?.[21] || '' %>">
 
-      <label for="sp2_no" class="mt-1">Nomor Surat</label>
+      <label for="sp2_no" class="mt-1">Notice Number</label>
       <input type="text" class="form-control form-control-sm" id="sp2_no_display" value="<%= row?.[22] || '' %>" disabled>
       <input type="hidden" name="sp2_no" value="<%= row?.[22] || '' %>">
 
-      <label for="sp2_send" class="mt-1">Actual SP2</label>
+      <label for="sp2_send" class="mt-1">Actual Delivery</label>
       <input type="date" class="form-control form-control-sm" id="sp2_send_display" value="<%= row?.[23] || '' %>" disabled>
       <input type="hidden" name="sp2_send" value="<%= row?.[23] || '' %>">
 
-      <label for="sp2_status" class="mt-1">Status Pengiriman</label>
+      <label for="sp2_status" class="mt-1">Dispatch Status</label>
       <select class="form-control form-control-sm" id="sp2_status" name="sp2_status">
-        <option value="" disabled selected>Pilih Status</option>
+        <option value="" disabled selected>Select Status</option>
         <% suratOptions.forEach(function(option) { %>
           <option value="<%= option %>" <%= row?.[24] === option ? 'selected' : '' %>><%= option %></option>
         <% }); %>
@@ -400,21 +400,21 @@ button,
 
     <!-- SP3 -->
     <div class="col-md-4">
-      <label for="sp3_date">Jadwal Kirim SP3</label>
+      <label for="sp3_date">3rd RL Schedule</label>
       <input type="date" class="form-control form-control-sm" id="sp3_date" value="<%= row?.[25] || '' %>" disabled>
       <input type="hidden" name="sp3_date" value="<%= row?.[25] || '' %>">
 
-      <label for="sp3_no" class="mt-1">Nomor Surat</label>
+      <label for="sp3_no" class="mt-1">Notice Number</label>
       <input type="text" class="form-control form-control-sm" id="sp3_no_display" value="<%= row?.[26] || '' %>" disabled>
       <input type="hidden" name="sp3_no" value="<%= row?.[26] || '' %>">
 
-      <label for="sp3_send" class="mt-1">Actual SP3</label>
+      <label for="sp3_send" class="mt-1">Actual Delivery</label>
       <input type="date" class="form-control form-control-sm" id="sp3_send_display" value="<%= row?.[27] || '' %>" disabled>
       <input type="hidden" name="sp3_send" value="<%= row?.[27] || '' %>">
 
-      <label for="sp3_status" class="mt-1">Status Pengiriman</label>
+      <label for="sp3_status" class="mt-1">Dispatch Status</label>
       <select class="form-control form-control-sm" id="sp3_status" name="sp3_status">
-        <option value="" disabled selected>Pilih Status</option>
+        <option value="" disabled selected>Select Status</option>
         <% suratOptions.forEach(function(option) { %>
           <option value="<%= option %>" <%= row?.[28] === option ? 'selected' : '' %>><%= option %></option>
         <% }); %>
@@ -442,7 +442,7 @@ button,
   <label for="user_name_wa">PIC Whatsapp</label>
   <select class="form-control form-control-sm" id="user_name_wa" name="user_name_wa"
     <%= row && row[29] ? 'disabled' : '' %>>
-    <option value="" disabled <%= !row || !row[29] ? 'selected' : '' %>>Pilih Nama User</option>
+    <option value="" disabled <%= !row || !row[29] ? 'selected' : '' %>>Select User Name</option>
     <% waOptions.forEach(function(option) { %>
       <option value="<%= option %>" <%= row && row[29] === option ? 'selected' : '' %>><%= option %></option>
     <% }); %>
@@ -455,7 +455,7 @@ button,
                 <div class="form-group">
                     <div class="row">
                     <div class="col">
-                    <label for="wa_date">Tanggal WhatsApp</label>
+                    <label for="wa_date">Delivery Date</label>
                     <input type="date" class="form-control form-control-sm" id="wa_date" name="wa_date"
                     value="<%= row && row[30] ? row[30] : '' %>" 
                     <%= row && row[30] ? 'disabled' : '' %>>
@@ -504,10 +504,10 @@ button,
   }
 %>
 <div class="form-group">
-  <label for="user_name_call">PIC Telpon</label>
+  <label for="user_name_call">PIC Call</label>
   <select class="form-control form-control-sm" id="user_name_call" name="user_name_call"
     <%= row && row[34] ? 'disabled' : '' %>>
-    <option value="" disabled <%= !row || !row[34] ? 'selected' : '' %>>Pilih Nama User</option>
+    <option value="" disabled <%= !row || !row[34] ? 'selected' : '' %>>Select User Name</option>
     <% callOptionsLocal.forEach(function(option) { %>
       <option value="<%= option %>" <%= row && row[34] === option ? 'selected' : '' %>><%= option %></option>
     <% }); %>
@@ -521,7 +521,7 @@ button,
                     <div class="row"> 
                     <!-- Tanggal Call Pertama -->
                     <div class="col">
-                    <label for="call1_debt_date">Tanggal Percobaan Pertama</label>
+                    <label for="call1_debt_date">Dialled Date</label>
                     <% if (row && row[35]) { %>
                     <input type="date" class="form-control form-control-sm" id="call1_debt_date_display" 
                     value="<%= row[35] %>" disabled>
@@ -533,7 +533,7 @@ button,
 
                     <!-- Status Call Pertama -->
                     <div class="col">
-                    <label for="call1_debt_status">Status Terhubung</label>
+                    <label for="call1_debt_status">Call Status</label>
                     <% if (row && row[36]) { %>
                     <select class="form-control form-control-sm" id="call1_debt_status_display" disabled>
                     <option value="<%= row[36] %>" selected><%= row[36] %></option>
@@ -541,7 +541,7 @@ button,
                     <input type="hidden" name="call1_debt_status" value="<%= row[36] %>">
                     <% } else { %>
                     <select class="form-control form-control-sm" id="call1_debt_status" name="call1_debt_status">
-                    <option value="" disabled selected>Pilih Status</option>
+                    <option value="" disabled selected>Select Status</option>
                     <% callOptions.forEach(function(option) { %>
                     <option value="<%= option %>"><%= option %></option>
                     <% }); %>
@@ -554,7 +554,7 @@ button,
 
                     <!-- Tanggal Call Kedua -->
                     <div class="col">
-                    <label for="call2_debt_date">Tanggal Percobaan Kedua</label>
+                    <label for="call2_debt_date">Dialled Date</label>
                     <% if (row && row[38]) { %>
                     <input type="date" class="form-control form-control-sm" id="call2_debt_date_display" 
                     value="<%= row[38] %>" disabled>
@@ -566,7 +566,7 @@ button,
 
                     <!-- Status Call Kedua -->
                     <div class="col">
-                    <label for="call2_debt_status">Status Terhubung</label>
+                    <label for="call2_debt_status">Call Status</label>
                     <% if (row && row[39]) { %>
                     <select class="form-control form-control-sm" id="call2_debt_status_display" disabled>
                     <option value="<%= row[39] %>" selected><%= row[39] %></option>
@@ -574,7 +574,7 @@ button,
                     <input type="hidden" name="call2_debt_status" value="<%= row[39] %>">
                     <% } else { %>
                     <select class="form-control form-control-sm" id="call2_debt_status" name="call2_debt_status">
-                    <option value="" disabled selected>Pilih Status</option>
+                    <option value="" disabled selected>Select Status</option>
                     <% callOptions.forEach(function(option) { %>
                     <option value="<%= option %>"><%= option %></option>
                     <% }); %>
@@ -586,7 +586,7 @@ button,
                 </div>
 
                 <div class="form-group">
-                    <label for="call_debt_kronologi">Kronologi Menghubungi Debitur</label>
+                    <label for="call_debt_kronologi">Kronologi Debtor Call</label>
                     <textarea class="form-control form-control-sm" id="call_debt_kronologi" name="call_debt_kronologi" rows="2"><%= row ? row[41] : '' %></textarea>
                 </div>
             </div>       
@@ -596,7 +596,7 @@ button,
                 <div class="form-group">
                     <div class="row">
                     <div class="col">
-                    <label for="call1_econ_date">Tanggal Percobaan Pertama</label>
+                    <label for="call1_econ_date">Dialled Date</label>
                     <% if (row && row[42]) { %>
                     <input type="date" class="form-control form-control-sm" value="<%= row[42] %>" disabled>
                     <input type="hidden" name="call1_econ_date" value="<%= row[42] %>">
@@ -606,7 +606,7 @@ button,
                     </div>
 
                     <div class="col">
-                    <label for="call1_econ_status">Status Terhubung</label>
+                    <label for="call1_econ_status">Call Status</label>
                     <% if (row && row[43]) { %>
                     <select class="form-control form-control-sm" disabled>
                     <option value="<%= row[43] %>" selected><%= row[43] %></option>
@@ -614,7 +614,7 @@ button,
                     <input type="hidden" name="call1_econ_status" value="<%= row[43] %>">
                     <% } else { %>
                     <select class="form-control form-control-sm" id="call1_econ_status" name="call1_econ_status">
-                    <option value="" disabled selected>Pilih Status</option>
+                    <option value="" disabled selected>Select Status</option>
                     <% callOptions.forEach(function(option) { %>
                     <option value="<%= option %>"><%= option %></option>
                     <% }); %>
@@ -626,7 +626,7 @@ button,
                     <input type="hidden" id="call1_econ_tmp" name="call1_econ_tmp" value="<%= row ? row[44] : '' %>">
 
                     <div class="col">
-                    <label for="call2_econ_date">Tanggal Percobaan Kedua</label>
+                    <label for="call2_econ_date">Dialled Date</label>
                     <% if (row && row[45]) { %>
                     <input type="date" class="form-control form-control-sm" value="<%= row[45] %>" disabled>
                     <input type="hidden" name="call2_econ_date" value="<%= row[45] %>">
@@ -636,7 +636,7 @@ button,
                     </div>
 
                     <div class="col">
-                    <label for="call2_econ_status">Status Terhubung</label>
+                    <label for="call2_econ_status">Call Status</label>
                     <% if (row && row[46]) { %>
                     <select class="form-control form-control-sm" disabled>
                     <option value="<%= row[46] %>" selected><%= row[46] %></option>
@@ -644,7 +644,7 @@ button,
                     <input type="hidden" name="call2_econ_status" value="<%= row[46] %>">
                     <% } else { %>
                     <select class="form-control form-control-sm" id="call2_econ_status" name="call2_econ_status">
-                    <option value="" disabled selected>Pilih Status</option>
+                    <option value="" disabled selected>Select Status</option>
                     <% callOptions.forEach(function(option) { %>
                     <option value="<%= option %>"><%= option %></option>
                     <% }); %>
@@ -657,7 +657,7 @@ button,
                 </div>
 
                 <div class="form-group">
-                    <label for="call_econ_kronologi">Kronologi Menghubungi EC</label>
+                    <label for="call_econ_kronologi">Kronologi Guarantor Call</label>
                     <textarea class="form-control form-control-sm" id="call_econ_kronologi" name="call_econ_kronologi" rows="2"><%= row ? row[48] : '' %></textarea>
                 </div>
              </div>
@@ -668,7 +668,7 @@ button,
                 <div class="form-group">
                     <div class="row">
                     <div class="col">
-                    <label for="new_contact">Nomor Kontak Baru</label>
+                    <label for="new_contact">New Number</label>
                     <% if (row && row[49]) { %>
                     <input type="text" class="form-control form-control-sm" value="<%= row[49] %>" disabled>
                     <input type="hidden" name="new_contact" value="<%= row[49] %>">
@@ -678,7 +678,7 @@ button,
                     </div>
 
                     <div class="col">
-                    <label for="call_other_date">Tanggal Menghubungi</label>
+                    <label for="call_other_date">Dialled Date</label>
                     <% if (row && row[50]) { %>
                     <input type="date" class="form-control form-control-sm" value="<%= row[50] %>" disabled>
                     <input type="hidden" name="call_other_date" value="<%= row[50] %>">
@@ -688,7 +688,7 @@ button,
                     </div>
 
                     <div class="col">
-                    <label for="call_other_status">Status Terhubung</label>
+                    <label for="call_other_status">Call Status</label>
                     <% if (row && row[51]) { %>
                     <select class="form-control form-control-sm" disabled>
                     <option selected><%= row[51] %></option>
@@ -696,7 +696,7 @@ button,
                     <input type="hidden" name="call_other_status" value="<%= row[51] %>">
                     <% } else { %>
                     <select class="form-control form-control-sm" id="call_other_status" name="call_other_status">
-                    <option value="" disabled selected>Pilih Status</option>
+                    <option value="" disabled selected>Select Status</option>
                     <% callOptions.forEach(function(option) { %>
                     <option value="<%= option %>"><%= option %></option>
                     <% }); %>
@@ -708,7 +708,7 @@ button,
                     <input type="hidden" id="call_other_tmp" name="call_other_tmp" value="<%= row ? row[52] : '' %>">
 
                 <div class="form-group">
-                    <label for="call_other_kronologi">Kronologi Nomor Baru</label>
+                    <label for="call_other_kronologi">Kronologi Additional Call</label>
                     <textarea class="form-control form-control-sm" id="call_other_kronologi" name="call_other_kronologi" rows="2"><%= row ? row[53] : '' %></textarea>
                 </div>
             </div>
@@ -726,7 +726,7 @@ button,
   }
 %>
 <div class="form-group">
-  <label for="user_name_visit">PIC Kunjungan</label>
+  <label for="user_name_visit">PIC Visit</label>
   <select class="form-control form-control-sm" id="user_name_visit" name="user_name_visit"
     <%= row && row[54] ? 'disabled' : '' %>>
     <option value="" disabled <%= !row || !row[54] ? 'selected' : '' %>>Pilih Nama User</option>
@@ -746,7 +746,7 @@ button,
       <div class="form-group">
         <div class="form-row">
           <div class="col">
-            <label for="visit_date">Tanggal Kunjungan</label>
+            <label for="visit_date">Visit Date</label>
             <% if (row && row[55]) { %>
               <input type="date" class="form-control form-control-sm mb-3" value="<%= row[55] %>" disabled>
               <input type="hidden" name="visit_date" value="<%= row[55] %>">
@@ -756,7 +756,7 @@ button,
           </div>
 
 <div class="col">
-  <label for="visit_ke">Visit ke-</label>
+  <label for="visit_ke">Visit Number</label>
   <% if (row && row[56]) { %>
     <select class="form-control form-control-sm mb-3" disabled>
       <option selected>Ke-<%= row[56] %></option>
@@ -764,7 +764,7 @@ button,
     <input type="hidden" name="visit_ke" value="<%= row[56] %>">
   <% } else { %>
     <select class="form-control form-control-sm mb-3" id="visit_ke" name="visit_ke">
-      <option value="" disabled selected>Pilih</option>
+      <option value="" disabled selected>Select</option>
       <% for (let i = 1; i <= 4; i++) { %>
         <option value="<%= i %>">Ke-<%= i %></option>
       <% } %>
@@ -774,13 +774,13 @@ button,
 </div>
 
 
-                        <label for="visit_Poto">Photo Visit</label>
+                        <label for="visit_Poto">Visit Photo</label>
                         <input type="file" class="form-control form-control-sm mb-3" id="visit_Poto" name="visit_Poto" multiple accept="image/*" onchange="previewImages(event)">
                         </div>
                         </div>
 
                         <div class="col-md-6">
-                        <label>Lihat Gambar:</label>
+                        <label>View Image :</label>
                         <div 
                             style="
                               border: 1.5px solid green; 
@@ -799,18 +799,18 @@ button,
                 </div>
 
                 <div class="form-group">
-                    <label for="visit_kronologi">Kronologi Kunjungan</label>
+                    <label for="visit_kronologi">Kronologi Visit</label>
                     <textarea class="form-control form-control-sm" id="visit_kronologi" name="visit_kronologi" rows="2"><%= row ? row[58] : '' %></textarea>
                 </div>
 
                 <div class="form-group">
                     <div class="row">
                     <div class="col">
-                    <label for="visit_location">Alamat Lokasi Unit Terakhir</label>
+                    <label for="visit_location">Last Unit Location</label>
                     <input type="text" class="form-control form-control-sm" id="visit_location" name="visit_location" value="<%= row[59] %>">
                     </div>
                   <div class="col">
-                    <label for="janji_bayar">Tanggal Janji Bayar</label>
+                    <label for="janji_bayar">PTP Date</label>
                     <input type="date" class="form-control form-control-sm" id="janji_bayar" name="janji_bayar" value="<%= row[60] %>">
                 </div>
                 </div>
@@ -823,7 +823,7 @@ button,
 
             <div class="tab-pane fade" id="eksternal" role="tablist">
                  <div class="form-group">
-                        <label for="sk_date">Tanggal SK</label>
+                        <label for="sk_date"> SK Date</label>
                         <% if (row && row[62]) { %>
                         <input type="date" class="form-control form-control-sm mb-3" value="<%= row[62] %>" disabled>
                         <input type="hidden" name="sk_date" value="<%= row[62] %>">
@@ -832,7 +832,7 @@ button,
                         <% } %>
                 </div> 
                 <div class="form-group">
-                    <label for="result_external">Hasil Assign Eksternal</label>
+                    <label for="result_external">Result Assign Eksternal</label>
                     <textarea class="form-control form-control-sm" id="result_external" name="result_external" rows="3"><%= row ? row[63] : '' %></textarea>
                 </div>
             </div>
@@ -1004,9 +1004,6 @@ document.querySelector('button[type="reset"]').addEventListener('click', () => {
     </button>
     <a href="/data" class="btn btn-secondary btn-sm">Back to Data Table</a>
     <button type="reset" class="btn btn-warning btn-sm">Reset Form</button>
-    </div>
-    <div>
-    <a href="/logout" class="btn btn-danger btn-sm">Logout</a>
     </div>
     </div>
 </form>

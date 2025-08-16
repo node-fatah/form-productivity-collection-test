@@ -45,9 +45,10 @@ app.set('views', path.join(__dirname, '..', 'views'));
 const session = require('express-session');
 
 app.use(session({
-  secret: 'Xnxx1230987azkaArga', // ganti dengan yang lebih aman
+  secret: 'Xnxx1230987azkaArga',
   resave: false,
-  saveUninitialized: true
+  saveUninitialized: true,
+  cookie: { maxAge: 8 * 60 * 60 * 1000 } // 8 jam
 }));
 
 
@@ -97,7 +98,6 @@ app.get('/login', (req, res) => {
 });
 
 // POST Login
-// POST Login
 app.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
@@ -130,12 +130,6 @@ app.post('/login', async (req, res) => {
 });
 
 
-// Logout
-app.get('/logout', (req, res) => {
-  req.session.destroy(() => {
-    res.redirect('/login');
-  });
-});
 
 // Sidebar
 app.get('/sidebar', (req, res) => {
@@ -303,8 +297,6 @@ app.get('/edit-id/:main_product/:agreement_number', requireLogin, async (req, re
 
 
 
-// Route to handle update
-// Route to handle update
 // Route to handle update
 app.post('/update/:main_product/:agreement_number', upload.array('visit_Poto'), requireLogin, async (req, res) => {
   const { main_product, agreement_number } = req.params;

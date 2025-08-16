@@ -8,7 +8,7 @@ const path = require('path');
 const { uploadFile } = require('./driveUploader');
 
 const app = express();
-const SPREADSHEET_ID = '1S8oHwZ839_cfFq1o1dK82HW9fCScntawCqX1zXPy15k';
+const SPREADSHEET_ID = '1T3ti9E3PrUY6LvxFKE1Q_4VjzXABzi3dpgDRCqwpH1s';
 const SHEET_NAME = 'Dataset';
 
 // View Engine Setup
@@ -231,7 +231,7 @@ app.post('/submit', requireLogin, async (req, res) => {
           call2_econ_date, call2_econ_status, call2_econ_tmp,call_econ_kronologi,
           new_contact, call_other_date, call_other_status, call_other_tmp, call_other_kronologi,
           user_name_visit, 
-          visit_date, visit_Poto, visit_kronologi, visit_location, janji_bayar, action_plan,
+          visit_date, visit_ke, visit_Poto, visit_kronologi, visit_location, janji_bayar, action_plan,
           sk_date, result_external} = req.body;
           try {
     await sheets.spreadsheets.values.append({
@@ -252,7 +252,7 @@ app.post('/submit', requireLogin, async (req, res) => {
           call2_econ_date, call2_econ_status, call2_econ_tmp,call_econ_kronologi,
           new_contact, call_other_date, call_other_status, call_other_tmp, call_other_kronologi,
           user_name_visit, 
-          visit_date, visit_Poto, visit_kronologi, visit_location, janji_bayar, action_plan,
+          visit_date, visit_ke, visit_Poto, visit_kronologi, visit_location, janji_bayar, action_plan,
           sk_date, result_external]],
       },
     });
@@ -304,61 +304,146 @@ app.get('/edit-id/:main_product/:agreement_number', requireLogin, async (req, re
 
 
 // Route to handle update
+// Route to handle update
+// Route to handle update
 app.post('/update/:main_product/:agreement_number', upload.array('visit_Poto'), requireLogin, async (req, res) => {
   const { main_product, agreement_number } = req.params;
   const body = req.body;
 
+  function safeValue(newVal, oldVal) {
+    return newVal && newVal.trim() !== "" ? newVal : (oldVal || "");
+  }
+
   try {
     const data = await fetchDataFromGoogleSheet();
-    const index = data.findIndex(row => row[0] === main_product && row[1] === agreement_number);
-    if (index === -1) {
-      return res.status(404).send('Data tidak ditemukan');
-    }
 
-    const response = await sheets.spreadsheets.values.get({
-      spreadsheetId: SPREADSHEET_ID,
-      range: `Dataset!A${index + 3}:BK${index + 3}`,
-    });
+    let rowsToUpdate = [];
 
-    const oldRow = response.data.values[0] || [];
-    const oldVisitPoto = oldRow[56] || '';
-    const oldLinkArray = oldVisitPoto ? oldVisitPoto.split('\n') : [];
+    if (main_product.toLowerCase() === 'heavy equipment') {
+      // Cari nama debitur dari row yang sedang diupdate
+      const targetRow = data.find(r => r[0] === main_product && r[1] === agreement_number);
+      if (!targetRow) return res.status(404).send('Data tidak ditemukan');
 
-    let newLinks = [];
-    if (req.files && req.files.length > 0) {
-      for (const file of req.files) {
-        const link = await uploadFile(file);
-        newLinks.push(link);
+      const targetDebitur = targetRow[2];
+      rowsToUpdate = data
+        .map((row, idx) => ({ row, idx }))
+        .filter(item => item.row[2] === targetDebitur);
+
+    } else {
+      const index = data.findIndex(row => row[0] === main_product && row[1] === agreement_number);
+      if (index !== -1) {
+        rowsToUpdate.push({ row: data[index], idx: index });
       }
     }
 
-    const newLinkArray = newLinks.map((link, i) => {
-      const total = oldLinkArray.length + i + 1;
-      return `[Foto ${total}](${link})`;
-    });
-    const visit_Poto = [...oldLinkArray, ...newLinkArray].join('\n');
+    if (rowsToUpdate.length === 0) {
+      return res.status(404).send('Data tidak ditemukan');
+    }
 
-    const values = [
-      body.main_product, body.agrrement_number, body.debitur_name, body.debt_phone, body.alamat_debt, body.econ_name, body.econ_phone, body.tenor,
-      body.current_period, body.installment, body.bill_date, '', '', '', '', '',
-      '', '', '', '', body.sp1_status, '', '', '', body.sp2_status, 
-      '', '', '', body.sp3_status, 
-      body.user_name_wa, body.wa_date, body.wa_status, body.wa_kronologi, body.wa_tmp,
-      body.user_name_call, body.call1_debt_date, body.call1_debt_status, body.call1_debt_tmp,
-      body.call2_debt_date, body.call2_debt_status, body.call2_debt_tmp, body.call_debt_kronologi,
-      body.call1_econ_date, body.call1_econ_status, body.call1_econ_tmp,
-      body.call2_econ_date, body.call2_econ_status, body.call2_econ_tmp, body.call_econ_kronologi,
-      body.new_contact, body.call_other_date, body.call_other_status, body.call_other_tmp, body.call_other_kronologi,
-      body.user_name_visit, body.visit_date, visit_Poto, body.visit_kronologi, body.visit_location, body.janji_bayar, body.action_plan,
-      body.sk_date, body.result_external
-    ];
+    for (const { idx } of rowsToUpdate) {
+      // Ambil data lama
+      const response = await sheets.spreadsheets.values.get({
+        spreadsheetId: SPREADSHEET_ID,
+        range: `Dataset!A${idx + 3}:BL${idx + 3}`,
+      });
+      const oldRow = response.data.values[0] || [];
+      const oldVisitPoto = oldRow[57] || '';
+      const oldLinkArray = oldVisitPoto ? oldVisitPoto.split('\n') : [];
 
-    await sheets.spreadsheets.values.update({
-      spreadsheetId: SPREADSHEET_ID,
-      range: `Dataset!A${index + 3}:BK${index + 3}`,
-      valueInputOption: 'USER_ENTERED',
-      resource: { values: [values] },
-    });
+      // Upload foto baru (jika ada)
+      let newLinks = [];
+      if (req.files && req.files.length > 0) {
+        for (const file of req.files) {
+          const link = await uploadFile(file);
+          newLinks.push(link);
+        }
+      }
+      const newLinkArray = newLinks.map((link, i) => {
+        const total = oldLinkArray.length + i + 1;
+        return `[Foto ${total}](${link})`;
+      });
+      const visit_Poto = [...oldLinkArray, ...newLinkArray].join('\n');
+
+      // Susun data dengan merge data lama
+      const values = [
+        safeValue(body.main_product, oldRow[0]),
+        safeValue(body.agrrement_number, oldRow[1]),
+        safeValue(body.debitur_name, oldRow[2]),
+        safeValue(body.debt_phone, oldRow[3]),
+        safeValue(body.alamat_debt, oldRow[4]),
+        safeValue(body.econ_name, oldRow[5]),
+        safeValue(body.econ_phone, oldRow[6]),
+        safeValue(body.tenor, oldRow[7]),
+        safeValue(body.current_period, oldRow[8]),
+        safeValue(body.installment, oldRow[9]),
+        safeValue(body.bill_date, oldRow[10]),
+
+        safeValue('', ''),
+        safeValue('', ''),
+        safeValue('', ''),
+        safeValue('', ''),
+        safeValue('', ''),
+        safeValue('', ''),
+        safeValue('', ''),
+        safeValue('', ''),
+        safeValue('', ''),
+
+        safeValue(body.sp1_status, oldRow[20]),
+        safeValue('', ''),
+        safeValue('', ''),
+        safeValue('', ''),
+
+        safeValue(body.sp2_status, oldRow[24]),
+        safeValue('', ''),
+        safeValue('', ''),
+        safeValue('', ''),        
+
+        safeValue(body.sp3_status, oldRow[28]),
+        safeValue(body.user_name_wa, oldRow[29]),
+        safeValue(body.wa_date, oldRow[30]),
+        safeValue(body.wa_status, oldRow[31]),
+        safeValue(body.wa_kronologi, oldRow[32]),
+        safeValue(body.wa_tmp, oldRow[33]),
+        safeValue(body.user_name_call, oldRow[34]),
+        safeValue(body.call1_debt_date, oldRow[35]),
+        safeValue(body.call1_debt_status, oldRow[36]),
+        safeValue(body.call1_debt_tmp, oldRow[37]),
+        safeValue(body.call2_debt_date, oldRow[38]),
+        safeValue(body.call2_debt_status, oldRow[39]),
+        safeValue(body.call2_debt_tmp, oldRow[40]),
+        safeValue(body.call_debt_kronologi, oldRow[41]),
+        safeValue(body.call1_econ_date, oldRow[42]),
+        safeValue(body.call1_econ_status, oldRow[43]),
+        safeValue(body.call1_econ_tmp, oldRow[44]),
+        safeValue(body.call2_econ_date, oldRow[45]),
+        safeValue(body.call2_econ_status, oldRow[46]),
+        safeValue(body.call2_econ_tmp, oldRow[47]),
+        safeValue(body.call_econ_kronologi, oldRow[48]),
+        safeValue(body.new_contact, oldRow[49]),
+        safeValue(body.call_other_date, oldRow[50]),
+        safeValue(body.call_other_status, oldRow[51]),
+        safeValue(body.call_other_tmp, oldRow[52]),
+        safeValue(body.call_other_kronologi, oldRow[53]),
+        safeValue(body.user_name_visit, oldRow[54]),
+        safeValue(body.visit_date, oldRow[55]),
+        safeValue(body.visit_ke, oldRow[56]),
+        visit_Poto, // kolom foto gabungan lama + baru
+        safeValue(body.visit_kronologi, oldRow[58]),
+        safeValue(body.visit_location, oldRow[59]),
+        safeValue(body.janji_bayar, oldRow[60]),
+        safeValue(body.action_plan, oldRow[61]),
+        safeValue(body.sk_date, oldRow[62]),
+        safeValue(body.result_external, oldRow[63])
+      ];
+
+      // Update ke Google Sheets
+      await sheets.spreadsheets.values.update({
+        spreadsheetId: SPREADSHEET_ID,
+        range: `Dataset!A${idx + 3}:BL${idx + 3}`,
+        valueInputOption: 'USER_ENTERED',
+        resource: { values: [values] },
+      });
+    }
 
     res.redirect('/data');
   } catch (error) {
@@ -366,6 +451,8 @@ app.post('/update/:main_product/:agreement_number', upload.array('visit_Poto'), 
     res.status(500).send('Error updating data');
   }
 });
+
+
 
 
 

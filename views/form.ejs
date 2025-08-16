@@ -726,17 +726,39 @@ button,
 </div>
 
 
-                <div class="form-group">
-                    <div class="row">
-                        <div class="col-md-6">
-                        <div class="form-group">
-                        <label for="visit_date">Tanggal Visit</label>
-                        <% if (row && row[55]) { %>
-                        <input type="date" class="form-control form-control-sm mb-3" value="<%= row[55] %>" disabled>
-                        <input type="hidden" name="visit_date" value="<%= row[55] %>">
-                        <% } else { %>
-                        <input type="date" class="form-control form-control-sm mb-3" id="visit_date" name="visit_date" value="">
-                        <% } %>
+<div class="form-group">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="form-group">
+        <div class="form-row">
+          <div class="col">
+            <label for="visit_date">Tanggal Kunjungan</label>
+            <% if (row && row[55]) { %>
+              <input type="date" class="form-control form-control-sm mb-3" value="<%= row[55] %>" disabled>
+              <input type="hidden" name="visit_date" value="<%= row[55] %>">
+            <% } else { %>
+              <input type="date" class="form-control form-control-sm mb-3" id="visit_date" name="visit_date" value="">
+            <% } %>
+          </div>
+
+<div class="col">
+  <label for="visit_ke">Visit ke-</label>
+  <% if (row && row[56]) { %>
+    <select class="form-control form-control-sm mb-3" disabled>
+      <option selected>Ke-<%= row[56] %></option>
+    </select>
+    <input type="hidden" name="visit_ke" value="<%= row[56] %>">
+  <% } else { %>
+    <select class="form-control form-control-sm mb-3" id="visit_ke" name="visit_ke">
+      <option value="" disabled selected>Pilih</option>
+      <% for (let i = 1; i <= 4; i++) { %>
+        <option value="<%= i %>">Ke-<%= i %></option>
+      <% } %>
+    </select>
+  <% } %>
+</div>
+</div>
+
 
                         <label for="visit_Poto">Photo Visit</label>
                         <input type="file" class="form-control form-control-sm mb-3" id="visit_Poto" name="visit_Poto" multiple accept="image/*" onchange="previewImages(event)">
@@ -764,40 +786,40 @@ button,
 
                 <div class="form-group">
                     <label for="visit_kronologi">Kronologi Kunjungan</label>
-                    <textarea class="form-control form-control-sm" id="visit_kronologi" name="visit_kronologi" rows="2"><%= row ? row[57] : '' %></textarea>
+                    <textarea class="form-control form-control-sm" id="visit_kronologi" name="visit_kronologi" rows="2"><%= row ? row[58] : '' %></textarea>
                 </div>
 
                 <div class="form-group">
                     <div class="row">
                     <div class="col">
                     <label for="visit_location">Alamat Lokasi Unit Terakhir</label>
-                    <input type="text" class="form-control form-control-sm" id="visit_location" name="visit_location" value="<%= row[58] %>">
+                    <input type="text" class="form-control form-control-sm" id="visit_location" name="visit_location" value="<%= row[59] %>">
                     </div>
                   <div class="col">
                     <label for="janji_bayar">Tanggal Janji Bayar</label>
-                    <input type="date" class="form-control form-control-sm" id="janji_bayar" name="janji_bayar" value="<%= row[59] %>">
+                    <input type="date" class="form-control form-control-sm" id="janji_bayar" name="janji_bayar" value="<%= row[60] %>">
                 </div>
                 </div>
                 </div>
                 <div class="form-group">
                     <label for="action_plan">Action Plan</label>
-                    <textarea class="form-control form-control-sm" id="action_plan" name="action_plan" rows="3"><%= row ? row[60] : '' %></textarea>
+                    <textarea class="form-control form-control-sm" id="action_plan" name="action_plan" rows="3"><%= row ? row[61] : '' %></textarea>
                 </div>
         </div>   
 
             <div class="tab-pane fade" id="eksternal" role="tablist">
                  <div class="form-group">
                         <label for="sk_date">Tanggal SK</label>
-                        <% if (row && row[61]) { %>
-                        <input type="date" class="form-control form-control-sm mb-3" value="<%= row[61] %>" disabled>
-                        <input type="hidden" name="sk_date" value="<%= row[61] %>">
+                        <% if (row && row[62]) { %>
+                        <input type="date" class="form-control form-control-sm mb-3" value="<%= row[62] %>" disabled>
+                        <input type="hidden" name="sk_date" value="<%= row[62] %>">
                         <% } else { %>
                         <input type="date" class="form-control form-control-sm mb-3" id="sk_date" name="sk_date" value="">
                         <% } %>
                 </div> 
                 <div class="form-group">
                     <label for="result_external">Hasil Assign Eksternal</label>
-                    <textarea class="form-control form-control-sm" id="result_external" name="result_external" rows="3"><%= row ? row[62] : '' %></textarea>
+                    <textarea class="form-control form-control-sm" id="result_external" name="result_external" rows="3"><%= row ? row[63] : '' %></textarea>
                 </div>
             </div>
 

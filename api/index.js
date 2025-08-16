@@ -68,7 +68,7 @@ async function fetchDataFromGoogleSheet() {
   try {
     const response = await sheets.spreadsheets.values.get({
       spreadsheetId: SPREADSHEET_ID,
-      range: `${SHEET_NAME}!A1:BK`, // Ambil data secara langsung dari Google Sheets
+      range: `${SHEET_NAME}!A1:BL`, // Ambil data secara langsung dari Google Sheets
     });
     return response.data.values.slice(2) || []; // Exclude header
   } catch (error) {
@@ -91,40 +91,58 @@ async function fetchDropdownList() {
   }
 }
 
-
+// GET Login Page
 app.get('/login', (req, res) => {
-  res.render('login', { error: null });
+  res.render('login', { error: null, userName: req.session.userName || null });
 });
 
+// POST Login
+// POST Login
 app.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
   try {
     const response = await sheets.spreadsheets.values.get({
       spreadsheetId: SPREADSHEET_ID,
-      range: 'Dropdown!L2:N15',
+      range: 'Dropdown!L2:N15', // L=email, M=password, N=nama
     });
 
     const users = response.data.values || [];
 
     const userFound = users.find(row =>
-      row[0]?.toLowerCase() === email.toLowerCase() &&
-      row[1] === password
+      (row[0] || '').toLowerCase().trim() === (email || '').toLowerCase().trim() &&
+      (row[1] || '').trim() === (password || '').trim()
     );
 
-if (userFound) {
-  req.session.loggedIn = true;
-  req.session.email = email;
-  req.session.userName = userFound[2]; // Nama user dari kolom M
-  req.session.loginTime = Date.now();  // ⬅️ Tambahkan ini
-  res.redirect('/data');
-    } else {
-      res.render('login', { error: 'Email atau Password salah' });
+    if (userFound) {
+      req.session.loggedIn = true;
+      req.session.email = userFound[0];    // email (kolom L)
+      req.session.userName = userFound[2]; // nama  (kolom N)
+      req.session.loginTime = Date.now();
+      return res.redirect('/sidebar');
     }
-  } catch (error) {
-    console.error('Login error:', error);
-    res.render('login', { error: 'Terjadi kesalahan saat login' });
+
+    return res.render('login', { error: 'Email atau Password salah', userName: null });
+  } catch (err) {
+    console.error('Error akses GSheet:', err);
+    return res.render('login', { error: 'Terjadi kesalahan sistem', userName: null });
   }
+});
+
+
+// Logout
+app.get('/logout', (req, res) => {
+  req.session.destroy(() => {
+    res.redirect('/login');
+  });
+});
+
+// Sidebar
+app.get('/sidebar', (req, res) => {
+  if (!req.session.loggedIn) {
+    return res.redirect('/login');
+  }
+  res.render('sidebar', { userName: req.session.userName });
 });
 
 

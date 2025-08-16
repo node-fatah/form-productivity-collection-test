@@ -304,7 +304,7 @@ button,
             <a class="nav-link" id="wa-tab" data-toggle="tab" href="#whatsapp" role="tab">WA Communication</a>
             </li>            
             <li class="nav-item">
-            <a class="nav-link" id="call-tab" data-toggle="tab" href="#call-debitur" role="tab">Debtor Call</a>
+            <a class="nav-link" id="call-tab" data-toggle="tab" href="#call-debitur" role="tab">Debitur Call</a>
             </li>
              <li class="nav-item">
             <a class="nav-link" id="call-econ-tab" data-toggle="tab" href="#call-econ" role="tab">Guarantor Call</a>
@@ -313,7 +313,7 @@ button,
             <a class="nav-link" id="call-other-tab" data-toggle="tab" href="#call-other" role="tab">Additional Calls</a>
             </li>
             <li class="nav-item">
-            <a class="nav-link" id="visit-tab" data-toggle="tab" href="#visit" role="tab">Site Visit</a>
+            <a class="nav-link" id="visit-tab" data-toggle="tab" href="#visit" role="tab"> Site Visit </a>
             </li>
             <li class="nav-item">
             <a class="nav-link" id="eksternal-tab" data-toggle="tab" href="#eksternal" role="tab">External Assignment</a>
@@ -668,7 +668,7 @@ button,
                 <div class="form-group">
                     <div class="row">
                     <div class="col">
-                    <label for="new_contact">New Number</label>
+                    <label for="new_contact">Others Number</label>
                     <% if (row && row[49]) { %>
                     <input type="text" class="form-control form-control-sm" value="<%= row[49] %>" disabled>
                     <input type="hidden" name="new_contact" value="<%= row[49] %>">
@@ -729,7 +729,7 @@ button,
   <label for="user_name_visit">PIC Visit</label>
   <select class="form-control form-control-sm" id="user_name_visit" name="user_name_visit"
     <%= row && row[54] ? 'disabled' : '' %>>
-    <option value="" disabled <%= !row || !row[54] ? 'selected' : '' %>>Pilih Nama User</option>
+    <option value="" disabled <%= !row || !row[54] ? 'selected' : '' %>>Select User Name</option>
     <% visitOptionsLocal.forEach(function(option) { %>
       <option value="<%= option %>" <%= row && row[54] === option ? 'selected' : '' %>><%= option %></option>
     <% }); %>

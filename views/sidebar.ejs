@@ -74,7 +74,7 @@
 <body>
 <div class="sidebar">
   <div class="sidebar-top">
-    <h5>👋 Halo, <%= userName %></h5>
+    <h5>👋 Hallo, <%= userName %></h5>
     <br>
     <a href="#" onclick="loadPage('/data')">📈 Productivity</a>
     <a href="#" onclick="loadPage('/visit')">📝 Form Visit</a>
@@ -83,18 +83,34 @@
   </div>
 
   <div class="sidebar-bottom">
-    <a href="/logout" class="text-danger">🔒 Logout</a>
+      <a href="/logout" class="text-danger">🔒 Logout</a>
+    </div>
   </div>
-</div>
-
 
   <div class="content">
+    <!-- Spinner -->
+    <div id="loadingSpinner">
+      <div class="spinner-border text-primary" role="status"></div>
+      <p class="mt-2 text-muted">Mohon tunggu...</p>
+    </div>
+
     <iframe id="mainFrame" src="" title="content"></iframe>
   </div>
 
   <script>
     function loadPage(url) {
-      document.getElementById('mainFrame').src = url;
+      const spinner = document.getElementById('loadingSpinner');
+      const iframe = document.getElementById('mainFrame');
+
+      spinner.style.display = 'block';   // tampilkan spinner
+      iframe.style.opacity = '0.3';      // efek redup
+      iframe.src = url;
+
+      // Sembunyikan spinner saat iframe selesai load
+      iframe.onload = function() {
+        spinner.style.display = 'none';
+        iframe.style.opacity = '1';
+      };
     }
   </script>
 </body>

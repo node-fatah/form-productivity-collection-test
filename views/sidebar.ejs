@@ -13,7 +13,7 @@
       display: flex;
       height: 100vh;
       background: #ffffff;
-      font-size: 14px; /* font diperkecil */
+      font-size: 14px;
     }
 
     .sidebar {
@@ -22,12 +22,12 @@
       color: #fff;
       display: flex;
       flex-direction: column;
-      justify-content: space-between; /* <- TAMBAHKAN INI */
+      justify-content: space-between;
       padding: 20px 0;
     }
 
     .sidebar-bottom {
-      padding: 0 20px 18px; /* padding kiri/kanan sama seperti link, plus bottom spacing */
+      padding: 0 20px 18px;
     }
 
     .sidebar h5 {
@@ -59,6 +59,7 @@
     .content {
       flex: 1;
       padding: 15px;
+      position: relative;
     }
 
     iframe {
@@ -66,23 +67,34 @@
       height: 100%;
       border: none;
       border-radius: 6px;
-      background: #fff;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      background: #ffffff;
+      box-shadow: 0 1px 3px rgba(0,0,0,0);
+    }
+
+    /* Spinner overlay */
+    #loadingSpinner {
+      display: none;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      z-index: 10;
     }
   </style>
 </head>
 <body>
-<div class="sidebar">
-  <div class="sidebar-top">
-    <h5>👋 Hallo, <%= userName %></h5>
-    <br>
-    <a href="#" onclick="loadPage('/data')">📈 Productivity</a>
-    <a href="#" onclick="loadPage('/visit')">📝 Form Visit</a>
-     <a href="#" onclick="loadPage('https://form-pdf-vercel.vercel.app/')">📄 Form PDF</a>
-    <a href="#" onclick="loadPage('https://data-table-collection.vercel.app/')">📊 Data Table</a>
-  </div>
+  <div class="sidebar">
+    <div class="sidebar-top">
+      <h5>👋 Halo, <%= userName %></h5>
+      <br>
+      <a href="#" onclick="loadPage('/data')">📈 Productivity</a>
+      <a href="#" onclick="loadPage('/visit')">📝 Form Visit</a>
+      <a href="#" onclick="loadPage('https://form-pdf-vercel.vercel.app/')">📄 Form PDF</a>
+      <a href="#" onclick="loadPage('https://data-table-collection.vercel.app/')">📊 Data Table</a>
+    </div>
 
-  <div class="sidebar-bottom">
+    <div class="sidebar-bottom">
       <a href="/logout" class="text-danger">🔒 Logout</a>
     </div>
   </div>
@@ -91,7 +103,7 @@
     <!-- Spinner -->
     <div id="loadingSpinner">
       <div class="spinner-border text-primary" role="status"></div>
-      <p class="mt-2 text-muted">Mohon tunggu...</p>
+      <p class="mt-2 text-muted">Please Wait...</p>
     </div>
 
     <iframe id="mainFrame" src="" title="content"></iframe>

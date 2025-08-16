@@ -22,7 +22,12 @@
       color: #fff;
       display: flex;
       flex-direction: column;
+      justify-content: space-between; /* <- TAMBAHKAN INI */
       padding: 20px 0;
+    }
+
+    .sidebar-bottom {
+      padding: 0 20px 18px; /* padding kiri/kanan sama seperti link, plus bottom spacing */
     }
 
     .sidebar h5 {
@@ -67,13 +72,21 @@
   </style>
 </head>
 <body>
-  <div class="sidebar">
+<div class="sidebar">
+  <div class="sidebar-top">
     <h5>👋 Halo, <%= userName %></h5>
-    <a href="#" onclick="loadPage('/data')">📊 Productivity</a>
-    <a href="#" onclick="loadPage('/datatable')">📋 DataTable</a>
-    <a href="#" onclick="loadPage('/formpdf')">📝 Form PDF</a>
-    <a href="/logout" class="text-danger">🚪 Logout</a>
+    <br>
+    <a href="#" onclick="loadPage('/data')">📈 Productivity</a>
+    <a href="#" onclick="loadPage('/visit')">📝 Form Visit</a>
+    <a href="#" onclick="loadPage('/formpdf')">📄 Form PDF</a>
+    <a href="#" onclick="loadPage('/datatable')">📊 Data Table</a>
   </div>
+
+  <div class="sidebar-bottom">
+    <a href="/logout" class="text-danger">🔒 Logout</a>
+  </div>
+</div>
+
 
   <div class="content">
     <iframe id="mainFrame" src="" title="content"></iframe>

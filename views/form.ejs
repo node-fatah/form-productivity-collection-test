@@ -173,7 +173,7 @@ button,
     <% if (editMode) { %>
     <div class="logo-container">
     <img src="https://static.wixstatic.com/media/30fa2e_387864f2775646d8ba60bb154d579510~mv2.png" alt="Logo Akulaku" class="img-fluid mx-auto d-block">
-    <p class="logo-title">Productivity Collection Non Retail</p>
+    <p class="logo-title">Productivity Collection</p>
     <p class="logo-subtitle">PT Akulaku Finance Indonesia</p>
     </div>
     <% } %>
@@ -189,15 +189,15 @@ button,
     <div class="form-group">
             <div class="row">
             <div class="col">
-            <label for="agrrement_number">Nomor Kontrak</label>
+            <label for="agrrement_number">Agreement Number</label>
             <input type="text" class="form-control form-control-sm" id="agrrement_number" name="agrrement_number" value="<%= row[1] %>" readonly required >
             </div>      
            <div class="col">
-            <label for="debitur_name">Nama Debitur/ Perusahaan</label>
+            <label for="debitur_name">Debitur/Company Name</label>
             <input type="text" class="form-control form-control-sm" id="debitur_name" name="debitur_name" value="<%= row[2] %>" readonly required>
             </div>
             <div class="col">
-            <label for="debtor_phone">Nomor Telpon</label>
+            <label for="debtor_phone">Phone</label>
             <div class="input-group">
             <input type="text" class="form-control form-control-sm" id="debt_phone" name="debt_phone" value="<%= row[3] %>" readonly required>
             <div class="input-group-append">
@@ -211,7 +211,7 @@ button,
     </div> 
 
             <div class="form-group">
-            <label for="alamat_debt">Alamat Penagihan</label>
+            <label for="alamat_debt">Billing Address</label>
             <textarea class="form-control form-control-sm" id="alamat_debt" name="alamat_debt" rows="3" readonly required><%= row[4] %></textarea>
             </div>
    
@@ -220,11 +220,11 @@ button,
     <div class="form-group">
             <div class="row">
             <div class="col">
-            <label for="econ_name">Emergency Contact/ PIC Perusahaan</label>
+            <label for="econ_name">Emergency Contact/PIC Name</label>
             <input type="text" class="form-control form-control-sm" id="econ_name" name="econ_name" value="<%= row[5] %>" readonly required >
             </div>      
             <div class="col">
-            <label for="econ_phone">Telpon EC/ PIC Perusahaan</label>
+            <label for="econ_phone">Emergency Contact/PIC Phone</label>
             <div class="input-group">
             <input type="text" class="form-control form-control-sm" id="econ_phone" name="econ_phone" value="<%= row[6] %>" readonly required>
             <div class="input-group-append">
@@ -244,7 +244,7 @@ button,
             <input type="text" class="form-control form-control-sm" id="tenor" name="tenor" value="<%= row[7] %>" readonly required >
             </div>    
             <div class="col">
-            <label for="current_period">Angsuran Ke-</label>
+            <label for="current_period">Period-</label>
             <input type="text" class="form-control form-control-sm" id="current_period" name="current_period" value="<%= row[8] %>" readonly required >
             </div> 
     
@@ -255,7 +255,7 @@ button,
 
 
             <div class="col">
-            <label for="due_date">Jatuh Tempo</label>
+            <label for="due_date">Due Date</label>
             <input type="text" class="form-control form-control-sm" id="due_date" name="due_date" value="<%= row[11] %>" readonly required >
             </div>    
             <div class="col">
@@ -273,7 +273,7 @@ button,
             <input type="text" class="form-control form-control-sm" id="installment" name="installment" value="<%= row[9] %>" readonly required >
             </div> 
             <div class="col">
-            <label for="repaid_amount">Nominal Pembayaran</label>
+            <label for="repaid_amount">Monthly Installment</label>
             <input type="text" class="form-control form-control-sm" id="repaid_amount" name="repaid_amount" value="<%= row[13] %>" readonly required >
             </div>  
             <div class="col">
@@ -298,22 +298,22 @@ button,
 <div class="form-section">
             <ul class="nav nav-tabs custom-tabs" id="formTabs" role="tablist">
             <li class="nav-item">
-            <a class="nav-link active" id="sp-tab" data-toggle="tab" href="#surat-peringatan" role="tab">Surat Peringatan</a>
+            <a class="nav-link active" id="sp-tab" data-toggle="tab" href="#surat-peringatan" role="tab">Warning Letter</a>
             </li>
             <li class="nav-item">
-            <a class="nav-link" id="wa-tab" data-toggle="tab" href="#whatsapp" role="tab">Pesan Whatsapp</a>
+            <a class="nav-link" id="wa-tab" data-toggle="tab" href="#whatsapp" role="tab">Messages/Whatsapp</a>
             </li>            
             <li class="nav-item">
-            <a class="nav-link" id="call-tab" data-toggle="tab" href="#call-debitur" role="tab">Telpon Debitur/ Perusahaan</a>
+            <a class="nav-link" id="call-tab" data-toggle="tab" href="#call-debitur" role="tab">Contact Debitur/Company</a>
             </li>
              <li class="nav-item">
-            <a class="nav-link" id="call-econ-tab" data-toggle="tab" href="#call-econ" role="tab">Telpon Econ/ PIC</a>
+            <a class="nav-link" id="call-econ-tab" data-toggle="tab" href="#call-econ" role="tab">Contact EC/PIC</a>
             </li>
             <li class="nav-item">
-            <a class="nav-link" id="call-other-tab" data-toggle="tab" href="#call-other" role="tab">Telpon Lainnya</a>
+            <a class="nav-link" id="call-other-tab" data-toggle="tab" href="#call-other" role="tab">Others Contact</a>
             </li>
             <li class="nav-item">
-            <a class="nav-link" id="visit-tab" data-toggle="tab" href="#visit" role="tab"> Kunjungan </a>
+            <a class="nav-link" id="visit-tab" data-toggle="tab" href="#visit" role="tab"> Visit </a>
             </li>
             <li class="nav-item">
             <a class="nav-link" id="eksternal-tab" data-toggle="tab" href="#eksternal" role="tab"> Eksternal </a>

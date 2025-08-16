@@ -335,10 +335,10 @@ button,
   }
 %>
 <div class="form-group">
-  <label for="user_name_sp">PIC Surat Peringatan</label>
+  <label for="user_name_sp">PIC Reminder Letter</label>
   <select class="form-control form-control-sm" id="user_name_sp" name="user_name_sp"
     <%= row && row[16] ? 'disabled' : '' %>>
-    <option value="" disabled <%= !row || !row[16] ? 'selected' : '' %>>Pilih Nama User</option>
+    <option value="" disabled <%= !row || !row[16] ? 'selected' : '' %>>Select User Name</option>
     <% spOptions.forEach(function(option) { %>
       <option value="<%= option %>" <%= row && row[16] === option ? 'selected' : '' %>><%= option %></option>
     <% }); %>
